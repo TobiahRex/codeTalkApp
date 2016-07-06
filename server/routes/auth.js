@@ -12,7 +12,7 @@ const FACEBOOK_SECRET = process.env.FACEBOOK_SECRET;
 const User            = require('../models/user');
 
 router.post('/facebook', (req, res) =>{
-  let fields = ['id', 'email', 'first_name', 'last_name', 'link', 'name'];
+  let fields = ['id', 'email', 'first_name', 'last_name', 'bio', 'work', 'birthday', 'about', 'devices', 'gender', 'hometown', 'link', 'name'];
   let accessTokenUrl = 'https://graph.facebook.com/v2.5/oauth/access_token';
   let graphApiUrl = 'https://graph.facebook.com/v2.5/me?fields=' + fields.join(',');
   let params = {
@@ -39,37 +39,38 @@ router.post('/facebook', (req, res) =>{
       if (response.statusCode !== 200) return res.status(500).send({ ERROR: profile.error.message });
 
       if (req.header('Authorization')) {
-        User.findOne({ facebook: profile.id }, (err, existingUser)=>{
+        User.findOne({ facebookId: profile.id }, (err, existingUser)=>{
           if (existingUser) return res.status(409).send({ ERROR: 'There is already a Facebook account that belongs to you.' });
 
           let token = req.header('Authorization').split(' ')[1];
-          let payload = jwt.decode(token, JWT_SECRET);
-          User.findById(payload.sub, (err, user)=> {
-            if (!user) return res.status(400).send({ ERROR: 'User not found' });
+          let payload = JWT.verify(token, JWT_SECRET);
+          User.findById(payload.sub, (err, dbUser)=> {
+            if (!dbUser) return res.status(400).send({ ERROR: 'User not found' });
 
-            user.facebook = profile.id;
-            user.picture = user.picture || 'https://graph.facebook.com/v2.3/' + profile.id + '/picture?type=large';
-            user.displayName = user.displayName || profile.name;
-            user.save(() =>{
-              let token = createJWT(user);
-              res.send({ token: token });
+            dbUser.Social.facebookId = profile.id;
+            dbUser.Avatar = dbUser.picture || 'https://graph.facebook.com/v2.3/' + profile.id + '/picture?type=large';
+            dbUser.Username = dbUser.Username || profile.name;
+            dbUser.save(() =>{
+              let token = dbUser.createToken();
+              res.send({token});
             });
           });
         });
       } else {
         // Step 3. Create a new user account or return an existing one.
-        User.findOne({ facebook: profile.id }, function(err, existingUser) {
+        User.findOne({ facebookId: profile.id }, function(err, existingUser) {
           if (existingUser) {
-            let token = createJWT(existingUser);
-            return res.send({ token: token });
+            let token = existingUser.createToken();
+            return res.send({token});
           }
           let user = new User();
-          user.facebook = profile.id;
-          user.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
-          user.displayName = profile.name;
-          user.save(function() {
-            let token = createJWT(user);
-            res.send({ token: token });
+          user.Social.facebookId = profile.id;
+          user.Avatar = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
+          user.Username = profile.name;
+          user.save((err, savedUser)=>{
+            if(err) return res.status(400).send({ERROR : `Could not save user | Details : ${err}`});
+            let token = savedUser.createToken();
+            res.send({token});
           });
         });
       }

@@ -51,13 +51,13 @@ let userSchema = new mongoose.Schema({
     type        :     String
   },
   Social    :   {   // OAuth user ID's
-  facebook    :   {
+  facebookId    :   {
     type          :     String
   },
-  twitter     :   {
+  twitterId     :   {
     type          :     String
   },
-  instagram   :   {
+  instagramId   :   {
     type          :     String
   }
 },

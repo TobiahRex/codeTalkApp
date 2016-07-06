@@ -30,6 +30,4 @@ router.route('/:id')
   User.updateUser(userObj, res.handle);
 });
 
-router.post('/facebook', (req, res)=> User.facebookLogin(req.body, res.handle));
-
 module.exports = router;

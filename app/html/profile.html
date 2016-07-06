@@ -6,9 +6,9 @@
       <div class="profile-fieldset row">
         <img class='col-xs-6 profile-picture' ng-src="{{profile.Avatar}}"/>
         <blockquote class='col-xs-6'>
-          <label >Bio:</label> <p class='lead text-primary'>{{profile.Bio}}</p>
-          <label >Email:</label> <p class='lead text-warning'>{{profile.Email}}</p>
-          <label >Last Login:</label> <p class='lead text-info'>{{profile.LastLogin | date}}</p>
+          <span class='label'>Bio:</span><br> <p class='lead text-primary'>{{profile.Bio}}</p>
+          <span class='label'>Email:</span> <p class='lead text-warning'>{{profile.Email}}</p>
+          <span class='label'>Last Login:</span> <p class='lead text-info'>{{profile.LastLogin | date}}</p>
         </blockquote>
       </div>
     </fieldset>
@@ -72,7 +72,7 @@
         <p>Account</p>
       </div>
       <div class="tab-pane fade" id="chat">
-        <p>Chat</p>
+        <p>Message</p>
       </div>
     </div>
 

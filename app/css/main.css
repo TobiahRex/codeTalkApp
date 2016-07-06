@@ -79,10 +79,11 @@ div.profile-fieldset {
   margin-left: 13%
 }
 
-/*div.container-fluid.jumbotron.profile-jumbo {
-  background-color: rgb(0, 0, 0, 0.33);
-}*/
-
 blockquote {
   border-left: 1px solid #000000;
+}
+
+div.jumbotron.profile-jumbo {
+  max-width: 62%;
+  background-color: rgba(0, 0, 0, 0.33) !important;
 }

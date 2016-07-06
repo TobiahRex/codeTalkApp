@@ -165,7 +165,11 @@ userSchema.statics.authenticate = (userObj, cb) => {
 };
 
 userSchema.statics.loginVerify = (req, res, next) => {
-  let token = req.cookies.accessToken;
+
+  let tokenHeader = req.headers.authorization;
+  if(!tokenHeader) return res.status(401).send({ERROR : 'User not found.'});
+  let token = tokenHeader.split(' ')[1];
+  
   JWT.verify(token, JWT_SECRET, (err, payload) => {
     if(err) return res.status(400).send({ERROR : `HACKER! You are not Authorized!`});
     User.findById(payload._id)

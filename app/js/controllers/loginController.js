@@ -12,11 +12,13 @@ angular.module('fullStackTemplate')
     });
   };
 
-
   $scope.authenticate = provider => {
     $auth.authenticate(provider)
     .then(res => $state.go('profile'))
-    .catch(()=> $state.go('login'));
+    .catch(err=> {
+      console.log("error: ", err);
+      $state.go('login');
+    });
   };
 
 });

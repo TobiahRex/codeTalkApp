@@ -39,16 +39,16 @@ router.post('/facebook', (req, res) =>{
       if (response.statusCode !== 200) return res.status(400).send({ ERROR: profile.error.message });
       console.log('FACEBOOK PROFILE: \n', profile);
       if (req.header('Authorization')) {
-        User.findOne({ facebookId: profile.id }, (err, existingUser)=>{
+        User.findOne({facebookId: profile.id}, (err, existingUser)=>{
           if (existingUser) return res.status(409).send({ ERROR: 'There is already a Facebook account that belongs to you.' });
-          console.log('EXISTING USER: \n', existingUser);
+
           let token = req.header('Authorization').split(' ')[1];
           let payload = JWT.verify(token, JWT_SECRET);
-          User.findById(payload.sub, (err, dbUser)=> {
-            console.log('dbUSER: \n', dbUser || 'err: ', err);
+          console.log('PAYLOAD: ', payload)
+          User.findById(payload._id, (err, dbUser)=> {
             if (!dbUser) return res.status(400).send({ ERROR: 'User not found' });
 
-            dbuser.Email              = profile.email,
+            dbUser.Email              = profile.email,
             dbUser.Firstname          = profile.first_name,
             dbUser.Lastname           = profile.last_name,
             dbUser.Social.facebookId  = profile.id;

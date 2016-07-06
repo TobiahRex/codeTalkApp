@@ -2,6 +2,11 @@ body {
   background-image: url("/css/images/dark-fabric.png");
 }
 
+div.home-jumbo {
+  height: 1000px;
+  background-image: url('/css/images/codecode.jpg');
+};
+
 .navbar-default .navbar-nav > .active > a {
   color: #2a9fd6;
   background-color: transparent;

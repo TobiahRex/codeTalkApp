@@ -1,0 +1,55 @@
+body {
+  background-image: url("/css/images/dark-fabric.png");
+}
+
+.navbar-default .navbar-nav > .active > a {
+  color: #2a9fd6;
+  background-color: transparent;
+  font-size: 18px;
+}
+
+hr {
+  border-color: #0F0F0F
+}
+
+a.to-splash {
+  color: white;
+  background-color: transparent;
+}
+a.to-splash:hover {
+  text-decoration: none;
+  color: #2a9fd6;
+  background-color: transparent;
+}
+
+.form-horizontal .control-label {
+  text-align: right;
+  margin-bottom: 0;
+  padding-top: 9px;
+  color: white;
+}
+
+button.btn, .btn-info, .btn-warning {
+  color: #242424 ;
+  font-size: 16px;
+}
+
+button.btn:hover, .btn-info:hover {
+  color: #242424;
+  font-size: 16px;
+}
+
+.signature-nav {
+  font-size: 12px;
+}
+
+div.enter-button > button.btn-primary.btn-lg {
+  margin-left: 45%;
+}
+
+
+.form-control {
+  background-color: #060606;
+  font-size: 17px;
+  color: #2a9fd6
+}

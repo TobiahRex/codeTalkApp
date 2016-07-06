@@ -6,7 +6,7 @@ angular.module('fullStackTemplate')
 
   Auth.logoutUser()
   .then(res=> {
-    toastr.info('You have successfully been logged out.', 'Logged Out', {iconClass : 'toast-info-toby'})
+    toastr.info('You have been successfully logged out.', 'Logged Out', {iconClass : 'toast-info-toby'})
     $scope.$emit('loggedOut')
   });
 });

@@ -12,6 +12,7 @@ angular.module('fullStackTemplate')
     $scope.errFile = errFiles && errFiles[0];
     userObj.Avatar = {data : file, contentType : file.type};
 
+    console.log('avatarFile: ', $scope.AvatarFile);
     // console.log("userObj.Avatar: ", userObj.Avatar);
   };
 

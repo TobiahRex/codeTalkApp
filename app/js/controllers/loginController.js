@@ -14,7 +14,10 @@ angular.module('fullStackTemplate')
 
   $scope.authenticate = provider => {
     $auth.authenticate(provider)
-    .then(res => $state.go('profile'))
+    .then(res => {
+      $scope.$emit('loggedIn');
+      $state.go('profile');
+    })
     .catch(err=> {
       console.log("error: ", err);
       $state.go('login');

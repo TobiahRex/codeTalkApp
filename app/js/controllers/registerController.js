@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fullStackTemplate')
-.controller('registerController', function($scope, $state, $timeout, Auth, Upload){
+.controller('registerController', function($scope, $state, $timeout, Auth, Upload, toastr){
   console.log('registerCtrl');
 
   let userObj = {
@@ -18,7 +18,7 @@ angular.module('fullStackTemplate')
 
   $scope.registerNewUser = registerObj => {
     //-pwd match
-    if(registerObj.password !== registerObj._Password) return console.log('ERROR: Passwords do not match.');
+    if(registerObj.password !== registerObj._Password) toastr.error('Passwords do not match', 'Error', {iconClass : 'toast-info-toby'});
 
     //-build userObj from registerObj
     userObj.Username  = registerObj.Username;

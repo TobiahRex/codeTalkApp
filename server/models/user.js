@@ -50,8 +50,14 @@ let userSchema = new mongoose.Schema({
   Avatar    :   {
     type        :     String
   },
+  CoverPhoto:   {
+    type        :     String
+  },
   Social    :   {   // OAuth user ID's
   facebookId    :   {
+    type          :     String
+  },
+  facebookLink  :   {
     type          :     String
   },
   twitterId     :   {

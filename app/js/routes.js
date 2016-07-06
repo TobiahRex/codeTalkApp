@@ -7,9 +7,10 @@ angular.module('fullStackTemplate')
   });
 
   $authProvider.facebook({
-    clientId : '1563271557312110'
+    clientId  : '1563271557312110',
+    url       : '/api/oauth/facebook'
   });
-  
+
   $stateProvider
   .state('splash', {
     url             :    '/',

@@ -22,14 +22,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'app')));
 app.use((req, res, next) => {
-  res.handle = (err, dbData) => {
-    res.status(err ? 400 : 200).send(err || dbData);
-  };
+  res.handle = (err, dbData) => res.status(err ? 400 : 200).send(err || dbData);
   next();
 });
 
 app.use('/api', require('./server/routes/api'));
-app.use('/auth', require('./server/routes/auth'));
 app.use('/',    require('./server/routes/index'));
 
 io.on('connection', (socket) => {
@@ -37,11 +34,6 @@ io.on('connection', (socket) => {
   Socket.init(io, socket);
 });
 
-server.listen(PORT, err => {
-  console.log(err || `Server @ PORT ${PORT}`);
-});
-mongoose.connect(MONGO_URL, err => {
-  console.log(err || `MONGOdb @ ${MONGO_URL}`);
-});
-
+server.listen(PORT, err => console.log(err || `Server @ PORT ${PORT}`));
+mongoose.connect(MONGO_URL, err => console.log(err || `MONGOdb @ ${MONGO_URL}`));
 module.exports = app;

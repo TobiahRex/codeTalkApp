@@ -1,29 +1,19 @@
 'use strict';
 
 angular.module('fullStackTemplate')
-.controller('registerController', function($scope, $state, Auth){
+.controller('registerController', function($scope, $state, $timeout, Auth, Upload){
   console.log('registerCtrl');
 
   let userObj = {
-    Access      :  'Not-Assigned',
-    Username    :   '',
-    _Password   :   '',
-    Firstname   :   '',
-    Lastname    :   '',
-    Email       :   '',
-    Bio         :   '',
-    Avatar      :   ''
+    Access      :  'Not-Assigned'
   };
 
-  $scope.thisImage = image => {
-    console.log(image);
+  $scope.uploadFiles = (file, errFiles) => {
+    $scope.errFile = errFiles && errFiles[0];
+    userObj.Avatar = {data : file, contentType : file.type};
 
-    console.log('newImage: ', new Buffer(image, 'base64'));
-
-
-  }
-
-  console.log('$state: ', $state);
+    // console.log("userObj.Avatar: ", userObj.Avatar);
+  };
 
   $scope.registerNewUser = registerObj => {
     //-pwd match
@@ -34,7 +24,7 @@ angular.module('fullStackTemplate')
     userObj._Password = registerObj._Password;
     userObj.Email     = registerObj.Email;
     userObj.Bio       = registerObj.Bio;
-    userObj.Avatar    = registerObj.Avatar || registerObj.AvatarFile;
+    userObj.Avatar    = registerObj.Avatar;
 
     registerObj.name.split(' ').forEach((name, i) => {
       i === 0 ? userObj.Firstname = name :
@@ -46,11 +36,11 @@ angular.module('fullStackTemplate')
     console.log('userObj: ', userObj);
     Auth.registerUser(userObj)
     .then(dataObj => {
-      $scope.$emit('loggedIn');
       $state.go('verify');
+      $scope.$emit('loggedIn');
     })
     .catch(err => {
-      console.log('register error: ', err.data.ERROR);
+      console.log('register error: ', err.data);
       $state.go('register');
     })
   };

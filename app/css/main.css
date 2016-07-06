@@ -31,12 +31,12 @@ a.to-splash:hover {
 
 button.btn, .btn-info, .btn-warning {
   color: #242424 ;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 button.btn:hover, .btn-info:hover {
   color: #242424;
-  font-size: 16px;
+  font-size: 17px;
 }
 
 .signature-nav {
@@ -47,9 +47,42 @@ div.enter-button > button.btn-primary.btn-lg {
   margin-left: 45%;
 }
 
-
 .form-control {
   background-color: #060606;
-  font-size: 17px;
-  color: #2a9fd6
+  font-size: 18px;
+  color: #2a9fd6;
+}
+
+button.btn.btn-success {
+  background-color: #05B51C;
+  border-color: #05B51C;
+  font-size: 18px;
+}
+
+.toast-info-toby {
+  background-color: rgba(20, 20, 20) !important;
+  box-shadow: 0px 4px 97px rgba(74, 255, 0, 1) !important;
+  color: rgba(74, 255, 0, 1) !important;
+}
+
+.toast-title {
+  font-size: 16px !important;
+  color: #E7E7E7 !important;
+}
+
+img.profile-picture {
+  max-width: 250px;
+  border-radius: 50%;
+}
+
+div.profile-fieldset {
+  margin-left: 13%
+}
+
+/*div.container-fluid.jumbotron.profile-jumbo {
+  background-color: rgb(0, 0, 0, 0.33);
+}*/
+
+blockquote {
+  border-left: 1px solid #000000;
 }

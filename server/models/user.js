@@ -46,7 +46,7 @@ let userSchema = new mongoose.Schema({
     type        :     String
   },
   Avatar    :   {
-    type        :     Buffer
+    type        :     String
   },
   Social    :   {   // OAuth user ID's
     facebook    :   {

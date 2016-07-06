@@ -37,17 +37,8 @@ angular.module('fullStackTemplate')
   })
   .state('logout', {
     url             :    '/logout',
-    controller      :    'logoutController',
-    resolve         :     {
-      logoutUser : function(Auth){
-        Auth.logoutUser()
-        .then(res => {
-          $scope.$emit('loggedOut');
-          $scope.go('/');
-        })
-        .catch(_=> $state.go('/'))
-      }
-    }
+    templateUrl     :    '/html/sign_in/logout.html',
+    controller      :    'logoutController'
   })
   .state('forgot', {
     url             :    '/forgot',
@@ -74,7 +65,7 @@ angular.module('fullStackTemplate')
     allowHtml: false,
     closeButton: false,
     closeHtml: '<button>&times;</button>',
-    extendedTimeOut: 1000,
+    extendedTimeOut: 5000,
     iconClasses: {
       error: 'toast-error',
       info: 'toast-info',

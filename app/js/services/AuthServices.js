@@ -5,7 +5,7 @@ angular.module('fullStackTemplate')
 
   this.loginUser = userObj => $http.post('/api/users/login', userObj);
 
-  this.logoutUser = _ => $http.delete('/api/users/logout');
+  this.logoutUser = _ => $http.post('/api/users/logout');
 
   this.registerUser = userObj => $http.post('/api/users/register', userObj);
 

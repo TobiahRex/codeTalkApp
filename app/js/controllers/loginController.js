@@ -1,7 +1,8 @@
 'use strict';
 angular.module('fullStackTemplate')
-.controller('loginController', function($scope, $state, Auth){
+.controller('loginController', function($scope, $state, Auth, $auth){
   console.log('loginCtrl');
+
   $scope.loginUser = loginObj => {
     Auth.loginUser(loginObj)
     .then(dataObj =>{
@@ -10,4 +11,12 @@ angular.module('fullStackTemplate')
       $state.go('profile');
     });
   };
+
+
+  $scope.authenticate = provider => {
+    $auth.authenticate(provider)
+    .then(res => $state.go('profile'))
+    .catch(()=> $state.go('login'));
+  };
+
 });

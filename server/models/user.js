@@ -5,6 +5,8 @@ const PORT        = process.env.PORT || 3001
 const mongoose    = require('mongoose');
 const moment      = require('moment');
 const JWT         = require('jsonwebtoken');
+const Request     = require('request');
+const QS          = require('querystring');
 const BCRYPT      = require('bcryptjs');
 const JWT_SECRET  = process.env.JWT_SECRET;
 const ObjectId    = mongoose.Schema.Types.ObjectId;
@@ -49,19 +51,19 @@ let userSchema = new mongoose.Schema({
     type        :     String
   },
   Social    :   {   // OAuth user ID's
-    facebook    :   {
-      type          :     String
-    },
-    twitter     :   {
-      type          :     String
-    },
-    instagram   :   {
-      type          :     String
-    }
+  facebook    :   {
+    type          :     String
   },
-  LastLogin :   {
-    type        :     Date
+  twitter     :   {
+    type          :     String
+  },
+  instagram   :   {
+    type          :     String
   }
+},
+LastLogin :   {
+  type        :     Date
+}
 });
 
 // CRUD
@@ -161,7 +163,7 @@ userSchema.statics.authenticate = (userObj, cb) => {
   });
 };
 
-userSchema.statics.loginVerify = function(req, res, next){
+userSchema.statics.loginVerify = (req, res, next) => {
   let token = req.cookies.accessToken;
   JWT.verify(token, JWT_SECRET, (err, payload) => {
     if(err) return res.status(400).send({ERROR : `HACKER! You are not Authorized!`});
@@ -185,6 +187,7 @@ userSchema.methods.createToken = function(){
   let token = JWT.sign({_id : this._id}, JWT_SECRET);
   return token;
 };
+
 
 let User = mongoose.model('User', userSchema);
 module.exports = User;

@@ -29,6 +29,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api', require('./server/routes/api'));
+app.use('/auth', require('./server/routes/auth'));
 app.use('/',    require('./server/routes/index'));
 
 io.on('connection', (socket) => {

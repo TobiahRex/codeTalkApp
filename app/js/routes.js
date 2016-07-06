@@ -2,7 +2,14 @@
 
 angular.module('fullStackTemplate')
 .config(function($stateProvider, $urlRouterProvider, toastrConfig, $authProvider){
+  $authProvider.github({
+    clientId : ''
+  });
 
+  $authProvider.facebook({
+    clientId : '1563271557312110'
+  });
+  
   $stateProvider
   .state('splash', {
     url             :    '/',
@@ -89,24 +96,6 @@ angular.module('fullStackTemplate')
     toastClass: 'toast'
   });
   // Detailed Info @ https://github.com/Foxandxss/angular-toastr
-});
-
-angular.module('fullStackTemplate')
-.config(function($authProvider){
-  $authProvider.github({
-    clientId : ''
-  });
-
-  $authProvider.facebook({
-    clientId : '1563271557312110'
-  })
-
-  $authenticate('facebook')
-  .then(res=> {
-
-  })
-  .catch()
-
 });
 
 

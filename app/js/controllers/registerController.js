@@ -12,7 +12,7 @@ angular.module('fullStackTemplate')
     $scope.errFile = errFiles && errFiles[0];
     userObj.Avatar = {data : file, contentType : file.type};
 
-    
+
     // console.log("userObj.Avatar: ", userObj.Avatar);
   };
 
@@ -45,4 +45,5 @@ angular.module('fullStackTemplate')
       $state.go('register');
     })
   };
+
 });

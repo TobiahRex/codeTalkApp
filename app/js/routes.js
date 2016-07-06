@@ -2,6 +2,9 @@
 
 angular.module('fullStackTemplate')
 .config(function($stateProvider, $urlRouterProvider, toastrConfig, $authProvider){
+  $authProvider.loginUrl = '/api/users/login';
+  $authProvider.signupUrl = '/api/users/register';
+
   $authProvider.github({
     clientId : ''
   });

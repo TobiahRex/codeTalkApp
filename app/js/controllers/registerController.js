@@ -11,9 +11,6 @@ angular.module('fullStackTemplate')
   $scope.uploadFiles = (file, errFiles) => {
     $scope.errFile = errFiles && errFiles[0];
     userObj.Avatar = {data : file, contentType : file.type};
-
-
-    // console.log("userObj.Avatar: ", userObj.Avatar);
   };
 
   $scope.registerNewUser = registerObj => {

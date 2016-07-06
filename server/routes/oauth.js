@@ -39,7 +39,7 @@ router.post('/facebook', (req, res) =>{
       if (response.statusCode !== 200) return res.status(400).send({ ERROR: profile.error.message });
       console.log('FACEBOOK PROFILE: \n', profile);
       if (req.header('Authorization')) {
-        User.findOne({facebookId: profile.id}, (err, existingUser)=>{
+        User.findOne(profile.id, (err, existingUser)=>{
           if (existingUser) return res.status(409).send({ ERROR: 'There is already a Facebook account that belongs to you.' });
 
           let token = req.header('Authorization').split(' ')[1];
@@ -53,7 +53,7 @@ router.post('/facebook', (req, res) =>{
             dbUser.Lastname           = profile.last_name,
             dbUser.Social.facebookId  = profile.id;
             dbUser.Social.facebookLink= profile.link;
-            dbUser.Avatar             = dbUser.Avatar || profile.picture.data.url;
+            dbUser.Avatar             = dbUser.Avatar || 'https://graph.facebook.com/v2.3/' + profile.id + '/picture?type=large';
             dbUser.CoverPhoto         = profile.cover.source;
             dbUser.Username           = dbUser.Username || profile.name;
 
@@ -67,18 +67,18 @@ router.post('/facebook', (req, res) =>{
         });
       } else {
         // Step 3. Create a new user account or return an existing one.
-        User.findOne({ facebookId: profile.id }, function(err, existingUser) {
+        User.findOne(profile.id, function(err, existingUser) {
           if (existingUser) {
             let token = existingUser.createToken();
             return res.send({token});
-          }
+          };
 
           let newUser = new User({
             Email               : profile.email,
             Firstname           : profile.first_name,
             Lastname            : profile.last_name,
-            Social              : { facebookLink : profile.link, facebookId : profile.id },
-            Avatar              : profile.picture.data.url,
+            Social              : {facebookLink : profile.link,facebookId : profile.id},
+            Avatar              : 'https://graph.facebook.com/v2.3/' + profile.id + '/picture?type=large',
             CoverPhoto          : profile.cover.source,
             Username            : profile.name
           });

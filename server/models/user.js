@@ -49,22 +49,22 @@ let userSchema = new mongoose.Schema({
     type        :     String
   },
   Social    :   {   // OAuth user ID's
-  facebookId    :   {
-    type          :     String
+    facebookId    :   {
+      type          :     String
+    },
+    facebookLink  :   {
+      type          :     String
+    },
+    twitterId     :   {
+      type          :     String
+    },
+    instagramId   :   {
+      type          :     String
+    }
   },
-  facebookLink  :   {
-    type          :     String
-  },
-  twitterId     :   {
-    type          :     String
-  },
-  instagramId   :   {
-    type          :     String
+  LastLogin :   {
+    type        :     Date
   }
-},
-LastLogin :   {
-  type        :     Date
-}
 });
 
 // CRUD
@@ -147,9 +147,11 @@ userSchema.statics.emailVerify = (token, cb) => {
     });
   });
 };
+
+
 // Auth MiddleWare
 userSchema.statics.authenticate = (userObj, cb) => {
-  User.findOne({Username  :   userObj.Username}, (err, dbUser) => {
+  User.findOne({Email  :   userObj.Email}, (err, dbUser) => {
     if(err || !dbUser) return cb(err || {ERROR : `Login Failed. Username or Password Inccorect. Try Again.`});
     BCRYPT.compare(userObj._Password, dbUser._Password, (err, result)=> {
       if(err || result !== true) return cb({ERROR : 'Login Failed. Username or Password Incorrect. Try Again.'});

@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('fullStackTemplate')
-.config(function($stateProvider, $urlRouterProvider, toastrConfig){
+.config(function($stateProvider, $urlRouterProvider, toastrConfig, $authProvider){
+
   $stateProvider
   .state('splash', {
     url             :    '/',
@@ -58,6 +59,7 @@ angular.module('fullStackTemplate')
         });
       }
     }
+
   });
   $urlRouterProvider.otherwise('/');
 
@@ -89,15 +91,34 @@ angular.module('fullStackTemplate')
   // Detailed Info @ https://github.com/Foxandxss/angular-toastr
 });
 
-angular.module('fullStackTemplate')               // this is the alternative way of configuring oAuth without satellizer.
-.factory('httpInterceptor', function($q, Auth){
-  return {
-    request : function(config){
-      return Auth.getToken()
-      .then(token=>{
-        config.headers.Authorization = `Bearer ${jwtToken}`;
-        return $q.resolve(config); // pass on the promise to "config"
-      })
-    }
-  }
-})
+angular.module('fullStackTemplate')
+.config(function($authProvider){
+  $authProvider.github({
+    clientId : ''
+  });
+
+  $authProvider.facebook({
+    clientId : '1563271557312110'
+  })
+
+  $authenticate('facebook')
+  .then(res=> {
+
+  })
+  .catch()
+
+});
+
+
+// angular.module('fullStackTemplate')               // this is the alternative way of configuring oAuth without satellizer. (SEUDO CODE)
+// .factory('httpInterceptor', function($q, Auth){
+//   return {
+//     request : function(config){
+//       return Auth.getToken()
+//       .then(token=>{
+//         config.headers.Authorization = `Bearer ${jwtToken}`;
+//         return $q.resolve(config); // pass on the promise to "config"
+//       })
+//     }
+//   }
+// })

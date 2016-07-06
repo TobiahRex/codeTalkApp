@@ -88,3 +88,16 @@ angular.module('fullStackTemplate')
   });
   // Detailed Info @ https://github.com/Foxandxss/angular-toastr
 });
+
+angular.module('fullStackTemplate')               // this is the alternative way of configuring oAuth without satellizer.
+.factory('httpInterceptor', function($q, Auth){
+  return {
+    request : function(config){
+      return Auth.getToken()
+      .then(token=>{
+        config.headers.Authorization = `Bearer ${jwtToken}`;
+        return $q.resolve(config); // pass on the promise to "config"
+      })
+    }
+  }
+})

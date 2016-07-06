@@ -87,3 +87,8 @@ div.jumbotron.profile-jumbo {
   max-width: 62%;
   background-color: rgba(0, 0, 0, 0.33) !important;
 }
+
+button.social-buttons {
+  background-color: #000000;
+  border-color: #000000
+}

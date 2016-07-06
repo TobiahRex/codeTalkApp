@@ -16,28 +16,23 @@ const Mail        = require('./mail');
 let userSchema = new mongoose.Schema({
   Access    :   {
     type        :   String,
-    enum        :   ['Administrator', 'Moderator', 'Customer', 'Not-Assigned'],
-    required    :   true
+    enum        :   ['Administrator', 'Moderator', 'Customer', 'Not-Assigned']
   },
   Username  :   {
     type        :   String,
     required    :   true
   },
   _Password :   {
-    type        :   String,
-    required    :   true
+    type        :   String
   },
   Firstname     :   {
-    type      :   String,
-    required  :   true
+    type      :   String
   },
   Lastname      :   {
-    type      :   String,
-    required  :   true
+    type      :   String
   },
   Email         :   {
     type      :     'String',
-    required  :     true,
     unique    :     true
   },
   Verified  :   {
@@ -190,7 +185,7 @@ userSchema.statics.loginVerify = (req, res, next) => {
 
 userSchema.methods.createToken = function(){
   let thisId = this._id;
-  let token = JWT.sign({_id : this._id}, JWT_SECRET);
+  let token = JWT.sign({_id : this._id}, JWT_SECRET, {expiresIn : '1 day'});
   return token;
 };
 

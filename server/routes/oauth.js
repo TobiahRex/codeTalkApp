@@ -45,12 +45,12 @@ router.post('/facebook', (req, res) =>{
           let token = req.header('Authorization').split(' ')[1];
           let payload = JWT.verify(token, JWT_SECRET);
           User.findById(payload.sub, (err, dbUser)=> {
-            console.log('dbUSER: \n', dbUser);
+            console.log('dbUSER: \n', dbUser || 'err: ', err);
             if (!dbUser) return res.status(400).send({ ERROR: 'User not found' });
 
             dbuser.Email              = profile.email,
-            dbUser.FirstName          = profile.first_name,
-            dbUser.LastName           = profile.last_name,
+            dbUser.Firstname          = profile.first_name,
+            dbUser.Lastname           = profile.last_name,
             dbUser.Social.facebookId  = profile.id;
             dbUser.Social.facebookLink= profile.link;
             dbUser.Avatar             = dbUser.Avatar || profile.picture.data.url;
@@ -58,6 +58,7 @@ router.post('/facebook', (req, res) =>{
             dbUser.Username           = dbUser.Username || profile.name;
 
             dbUser.save((err, savedUser) =>{
+              console.log('err: ', err);
               if(err) return res.status(400).send({ERROR : `Could not save user | Details : ${err}`});
               let token = dbUser.createToken();
               res.send({token});
@@ -74,16 +75,16 @@ router.post('/facebook', (req, res) =>{
 
           let newUser = new User({
             Email               : profile.email,
-            FirstName           : profile.first_name,
-            LastName            : profile.last_name,
-            Social.facebookLink : profile.link,
-            Social.facebookId   : profile.id,
+            Firstname           : profile.first_name,
+            Lastname            : profile.last_name,
+            Social              : { facebookLink : profile.link, facebookId : profile.id },
             Avatar              : profile.picture.data.url,
             CoverPhoto          : profile.cover.source,
-            Username            : profile.name;
+            Username            : profile.name
           });
 
           newUser.save((err, savedUser)=>{
+            console.log('err: ', err);
             if(err) return res.status(400).send({ERROR : `Could not save newUser | Details : ${err}`});
             let token = savedUser.createToken();
             console.log('new SAVED USER: \n', savedUser);

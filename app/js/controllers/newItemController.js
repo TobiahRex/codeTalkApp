@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fullStackTemplate')
-.controller('newItemController', function($scope, $state, Items){
+.controller('newItemController', function($scope, $state){
 
 // TODO : Create Items Service
 

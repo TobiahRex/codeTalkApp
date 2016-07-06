@@ -17,9 +17,8 @@
           <br>
           <input ng-model='registerObj.Avatar' type="text" class="form-control " placeholder="Avatar URL">
           <br>
-          <div class="fileinput fileinput-new " data-provider='fileinput'>
-            <input class="btn btn-info btn-sm btn-file" type='file' name='file' style="font-size: 12px; color : #DEDEDE">Choose Image File</input><br>
-            <small ng-model='registerObj.AvatarFile' class="fileinput-new">No File Chosen</small>
+          <div class="fileinput fileinput-new text-center " data-provider='fileinput'>
+            <input ng-change='thisImage(this)' ng-model='registerObj.AvatarFile' class="btn-default btn-sm btn-file" type='file' name='file' style="font-size: 12px; color : #DEDEDE"/>
           </div>
           <br>
           <textarea ng-model='registerObj.Bio' class='form-control' placeholder="Bio"></textarea>

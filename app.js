@@ -2,7 +2,7 @@
 
 require('dotenv').load();
 const PORT          = process.env.PORT || 3001;
-const MONGO_URL     = process.env.MONGODB_URI || "mongodb://localhost/FullStack_CHANGE_ME!!!!!!!!!!!!!!!!!!!!";
+const MONGO_URL     = process.env.MONGODB_URI || "mongodb://localhost/codeTalkApp";
 
 const express       = require('express');
 const router        = express.Router();

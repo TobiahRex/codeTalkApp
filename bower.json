@@ -28,7 +28,8 @@
     "angular-moment": "^0.10.3",
     "moment": "^2.13.0",
     "angular-toastr": "^1.7.0",
-    "angular-animate": "^1.5.7"
+    "angular-animate": "^1.5.7",
+    "sendgrid": "^3.0.7"
   },
   "resolutions": {
     "angular": "^1.5.7",

@@ -1,6 +1,7 @@
 'use strict';
 
 require('dotenv').load();
+const PORT        = process.env.PORT || 3001
 const mongoose    = require('mongoose');
 const moment      = require('moment');
 const JWT         = require('jsonwebtoken');
@@ -45,7 +46,7 @@ let userSchema = new mongoose.Schema({
     type        :     String
   },
   Avatar    :   {
-    type        :     String
+    type        :     Buffer
   },
   Social    :   {   // OAuth user ID's
     facebook    :   {
@@ -126,7 +127,7 @@ userSchema.methods.profileLink = function(){
   };
 
   let token = JWT.sign(payload, JWT_SECRET);
-  return `http://localhost:3000/api/users/verify/${token}`;
+  return `http://localhost:${PORT}/api/users/verify/${token}`;
 };
 
 userSchema.statics.emailVerify = (token, cb) => {

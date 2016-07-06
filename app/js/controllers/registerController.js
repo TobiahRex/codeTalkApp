@@ -15,6 +15,16 @@ angular.module('fullStackTemplate')
     Avatar      :   ''
   };
 
+  $scope.thisImage = image => {
+    console.log(image);
+
+    console.log('newImage: ', new Buffer(image, 'base64'));
+
+
+  }
+
+  console.log('$state: ', $state);
+
   $scope.registerNewUser = registerObj => {
     //-pwd match
     if(registerObj.password !== registerObj._Password) return console.log('ERROR: Passwords do not match.');
@@ -36,12 +46,12 @@ angular.module('fullStackTemplate')
     console.log('userObj: ', userObj);
     Auth.registerUser(userObj)
     .then(dataObj => {
-      $state.$emit('loggedIn');
+      $scope.$emit('loggedIn');
       $state.go('verify');
     })
     .catch(err => {
-      console.log('register error: ', err);
-      $state.go('home');
+      console.log('register error: ', err.data.ERROR);
+      $state.go('register');
     })
   };
 });

@@ -8,7 +8,7 @@ router.post('/:user/comment/:person', (req, res)=> {
   let reqBody = {
     user : req.params.user,
     person : req.params.person,
-    comment : req.body
+    comment : req.body.comment
   };
   User.addComment(reqBody, res.handle);
 });

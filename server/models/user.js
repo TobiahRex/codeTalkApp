@@ -14,33 +14,18 @@ const Mail        = require('./mail');
 
 
 let commentLikeSchema = new mongoose.Schema({
-  UserId      :   {
-    type      :   ObjectId,
-    ref       :   'User'
-  },
   likeDate    :   {
     type      :   Date,
     default   :   Date.now
   }
 });
 let replyLikeSchema = new mongoose.Schema({
-  UserId      :   {
-    type      :   ObjectId,
-    ref       :   'User'
-  },
   likeDate    :   {
     type      :   Date,
     default   :   Date.now
   }
 });
 let replySchema = new mongoose.Schema({
-  UserId      :   {
-    type      :   ObjectId,
-    ref       :   'User'
-  },
-  ReplyId     :   { // uuid
-    type      :   String
-  },
   Body        :   {
     type      :   String
   },
@@ -50,9 +35,9 @@ let replySchema = new mongoose.Schema({
   Likes       :   [replyLikeSchema] // reply likes
 });
 let commentSchema = new mongoose.Schema({
-  UserId      :   {
-    type      :     ObjectId,
-    ref       :     'User'
+  UserId    :   {
+    type    :   ObjectId,
+    ref     :   'User'
   },
   CommentDate :   {
     type      :     Date
@@ -124,12 +109,14 @@ let userSchema = new mongoose.Schema({
   instagramId   :   {
     type          :     String
   }
-  },
-  LastLogin :   {
-    type        :     Date
-  },
-  Comments  :   [commentSchema],
-  Messages  :   [messageSchema]
+},
+LastLogin :   {
+  type        :     Date
+},
+wComments  :  [commentSchema],
+wMessages  :  [messageSchema],
+rComments  :  []
+rMessages  :  []
 });
 
 // Basic CRUD
@@ -261,24 +248,31 @@ userSchema.methods.createToken = function(){
 
 // Social Methods
 userSchema.statics.addComment = (reqBody ,cb) => {
+  console.log("reqbody: ", reqBody);
   if(!reqBody.user) return err({ERROR : 'No comment found in res. object.'});
   User.findById(reqBody.user, (err1, dbUser)=> {
+    console.log('err1: ', err1);
+    console.log('dbUser: ', dbUser);
     User.findById(reqBody.person, (err2, dbPerson)=>{
       if(err1 || err2) return cb(err1 || err2);
 
-      let newComment = {
-        Body        : reqBody.comment,
+      let wComment = {
+        UserId      : dbPerson._id,
         CommentDate : Date.now(),
-        UserId      : dbPerson._id
+        Body        : reqBody.comment
       };
-
-      dbUser.Comments.push(reqBody.comment);
-      dbPerson.Comments.push(newComment);
-      dbPerson.save((err1, savedPerson)=>{
-        dbUser.save((err2, savedUser)=> {
-          err1 || err2 ? cb(err1 || err2) : cb(null, {savedPerson, savedUser});
-        });
+      dbPerson.Comments.push(wComment);
+      dbPerson.save((err, savedPerson)=> {
+        if(err) return cb(err); 
+        console.log(savePerson.Comments);
       });
+
+      // dbUser.Comments.push(newComment);
+      //
+      // dbUser.save((err2, savedUser)=> {
+      //   console.log('savedUser: ', savedUser);
+      //   // err2 ? cb(err2) : cb(null, {savedPerson, savedUser});
+      // });
     });
   });
 };

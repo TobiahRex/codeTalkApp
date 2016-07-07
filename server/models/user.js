@@ -12,6 +12,7 @@ const JWT_SECRET  = process.env.JWT_SECRET;
 const ObjectId    = mongoose.Schema.Types.ObjectId;
 const Mail        = require('./mail');
 
+
 let commentLikeSchema = new mongoose.Schema({
   UserId      :   {
     type      :   ObjectId,
@@ -22,25 +23,6 @@ let commentLikeSchema = new mongoose.Schema({
     default   :   Date.now
   }
 });
-
-let messageSchema = new mongoose.Schema({
-  UserId :  {
-    type    :     ObjectId,
-    ref     :     'User'
-  },
-  MessageDate : {
-    type    :   Date,
-    default :   Date.now
-  },
-  Body      :   {
-    type: String
-  },
-  Replies   : {
-    type    :   ObjectId,
-    ref
-  }
-});
-
 let replyLikeSchema = new mongoose.Schema({
   UserId      :   {
     type      :   ObjectId,
@@ -51,7 +33,6 @@ let replyLikeSchema = new mongoose.Schema({
     default   :   Date.now
   }
 });
-
 let replySchema = new mongoose.Schema({
   UserId      :   {
     type      :   ObjectId,
@@ -68,29 +49,40 @@ let replySchema = new mongoose.Schema({
   },
   Likes       :   [replyLikeSchema] // reply likes
 });
-
 let commentSchema = new mongoose.Schema({
-    UserId      :   {
-      type      :     ObjectId,
-      ref       :     'User'
-    },
-    CommentId   :   {
-      type      :   String
-    },
-    CommentDate :   {
-      type      :     Date
-    },
-    Body        :   {
-      type      :    String
-    },
-    Time        :   {
-      type      :     Date
-    },
-    Likes       :   [commentLikeSchema],
-    Replies     :   [replySchema]
-  }
+  UserId      :   {
+    type      :     ObjectId,
+    ref       :     'User'
+  },
+  CommentId   :   {
+    type      :   String
+  },
+  CommentDate :   {
+    type      :     Date
+  },
+  Body        :   {
+    type      :    String
+  },
+  Time        :   {
+    type      :     Date
+  },
+  Likes       :   [commentLikeSchema],
+  Replies     :   [replySchema]
 })
-
+let messageSchema = new mongoose.Schema({
+  UserId :  {
+    type    :     ObjectId,
+    ref     :     'User'
+  },
+  MessageDate : {
+    type    :   Date,
+    default :   Date.now
+  },
+  Body      :   {
+    type: String
+  },
+  Replies   : [replySchema]
+});
 let userSchema = new mongoose.Schema({
   Access    :   {
     type        :   String,
@@ -102,19 +94,19 @@ let userSchema = new mongoose.Schema({
   _Password :   {
     type        :   String
   },
-  Firstname     :   {
-    type      :   String
+  Firstname :   {
+    type        :   String
   },
-  Lastname      :   {
-    type      :   String
+  Lastname  :   {
+    type        :   String
   },
-  Email         :   {
-    type      :     'String',
-    unique    :     true
+  Email     :   {
+    type        :     'String',
+    unique      :     true
   },
   Verified  :   {
-    type      :     Boolean,
-    default   :     false
+    type        :     Boolean,
+    default     :     false
   },
   Bio       :   {
     type        :     String
@@ -138,13 +130,14 @@ let userSchema = new mongoose.Schema({
   instagramId   :   {
     type          :     String
   }
-},
-LastLogin :   {
-  type        :     Date
-},
-Comments  :   [commentSchema],
-Messages  :   [messageSchema]
+  },
+  LastLogin :   {
+    type        :     Date
+  },
+  Comments  :   [commentSchema],
+  Messages  :   [messageSchema]
 });
+
 
 // CRUD
 userSchema.statics.getUser = (userId, cb) => {
@@ -272,6 +265,10 @@ userSchema.methods.createToken = function(){
   let token = JWT.sign({_id : this._id}, JWT_SECRET, {expiresIn : '1 day'});
   return token;
 };
+
+userSchema.statics.addComment = (commentObj, cb) => {
+  
+}
 
 
 let User = mongoose.model('User', userSchema);

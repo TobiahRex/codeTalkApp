@@ -215,7 +215,7 @@ userSchema.statics.emailVerify = (token, cb) => {
 
 // Verify User Login MiddleWare
 userSchema.statics.authenticate = (userObj, cb) => {
-  User.findOne({Email  :   userObj.Email}, (err, dbUser) => {
+  User.findOne({Email : userObj.Email}, (err, dbUser) => {
     if(err || !dbUser) return cb(err || {ERROR : `Login Failed. Username or Password Inccorect. Try Again.`});
     BCRYPT.compare(userObj._Password, dbUser._Password, (err, result)=> {
       if(err || result !== true) return cb({ERROR : 'Login Failed. Username or Password Incorrect. Try Again.'});
@@ -231,13 +231,13 @@ userSchema.statics.authenticate = (userObj, cb) => {
 };
 
 userSchema.statics.loginVerify = function(req, res, next){
-
   let tokenHeader = req.headers.authorization;
-  if(!tokenHeader) return res.status(401).send({ERROR : 'User not found.'});
+  console.log('tokenHeader: ', tokenHeader);
+  if(!tokenHeader) return res.status(400).send({ERROR : 'User not found.'});
   let token = tokenHeader.split(' ')[1];
 
   JWT.verify(token, JWT_SECRET, (err, payload) => {
-    if(err) return res.status(400).send({ERROR : `HACKER! You are not Authorized!`});
+    if(err) return res.status(401).send({ERROR : `HACKER! You are not Authorized!`});
     User.findById(payload._id)
     .select({_Password : false})
     .exec((err, dbUser)=> {
@@ -271,9 +271,14 @@ userSchema.statics.addComment = (reqBody ,cb) => {
         CommentDate : Date.now(),
         UserId      : dbPerson._id
       };
-      
-      dbUser.Comments.push(reqbody.comment);
+
+      dbUser.Comments.push(reqBody.comment);
       dbPerson.Comments.push(newComment);
+      dbPerson.save((err1, savedPerson)=>{
+        dbUser.save((err2, savedUser)=> {
+          err1 || err2 ? cb(err1 || err2) : cb(null, {savedPerson, savedUser});
+        });
+      });
     });
   });
 };

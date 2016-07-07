@@ -4,13 +4,16 @@ angular.module('fullStackTemplate')
   console.log('loginCtrl');
 
   $scope.loginUser = loginObj => {
-    Auth.loginUser(loginObj)
-    .then(dataObj =>{
-      if(dataObj.status !== 200) return console.log('login failed.', dataObj.data);
+    $auth.login(loginObj)
+    .then(res => {
+      console.log('res: ', res.data);      
       $scope.$emit('loggedIn');
       $state.go('profile');
-    });
-  };
+    })
+    .catch(err=> {
+      console.log('err: ', err);
+    })
+  }
 
   $scope.authenticate = provider => {
     $auth.authenticate(provider)

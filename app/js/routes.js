@@ -64,7 +64,8 @@ angular.module('fullStackTemplate')
     resolve         :     {
       dbProfile   :     function(Auth, $q, $state){
         return Auth.getProfile()
-        .catch(()=>{
+        .catch(err=>{
+          console.log('err: ', err);
           $state.go('login');
           return $q.reject();
         });

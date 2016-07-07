@@ -4,16 +4,22 @@ let express = require('express');
 let router  = express.Router();
 let User    = require('../models/user');
 
-router.route('/:user/comment/:person')
-.post((req, res)=> User.addComment(req.body, res.handle));
-
+router.post('/:user/comment/:person', (req, res)=> {
+  let reqBody = {
+    user : req.params.user,
+    person : req.params.person,
+    comment : req.body
+  };
+  User.addComment(reqBody, res.handle);
+});
 
 router.post('/register', (req, res) => User.register(req.body, res.handle));
 
 router.route('/login')
 .post((req, res)=>
   User.authenticate(req.body, (err, tokenPkg ) => err ? res.status(400).send(err) :
-  res.cookie('accessToken', tokenPkg.token).status(200).send('User is logged in.')));
+  res.status(200).send({token : tokenPkg.token}))
+);
 
 router.post('/logout', (req, res)=> res.clearCookie('accessToken').status(200).send({SUCCESS : `User has been Logged out.`}));
 

@@ -7,11 +7,6 @@ div.home-jumbo {
   background-image: url('/css/images/codecode.jpg');
 };
 
-.navbar-default .navbar-nav > .active > a {
-  color: #2a9fd6;
-  background-color: transparent;
-  font-size: 18px;
-}
 
 hr {
   border-color: #0F0F0F
@@ -122,4 +117,10 @@ i.fa-comment, i.fa-thumbs-up, i.fa-envelope, i.fa-search {
 
 a.message-footer {
   color: #676666;
+}
+
+ul.nav.navbar-nav > a {
+  color: #2a9fd6 !important;
+  background-color: transparent;
+  font-size: 18px;
 }

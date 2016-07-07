@@ -12,14 +12,92 @@ const JWT_SECRET  = process.env.JWT_SECRET;
 const ObjectId    = mongoose.Schema.Types.ObjectId;
 const Mail        = require('./mail');
 
+let commentLikeSchema = new mongoose.Schema({
+  UserId      :   {
+    type      :   ObjectId,
+    ref       :   'User'
+  },
+  likeDate    :   {
+    type      :   Date,
+    default   :   Date.now
+  }
+});
+
+let messageSchema = new mongoose.Schema({
+  UserId :  {
+    type    :     ObjectId,
+    ref     :     'User'
+  },
+  MessageDate : {
+    type    :   Date,
+    default :   Date.now
+  },
+  Body      :   {
+    type: String
+  },
+  Replies   : {
+    type    :   ObjectId,
+    ref
+  }
+});
+
+let replyLikeSchema = new mongoose.Schema({
+  UserId      :   {
+    type      :   ObjectId,
+    ref       :   'User'
+  },
+  likeDate    :   {
+    type      :   Date,
+    default   :   Date.now
+  }
+});
+
+let replySchema = new mongoose.Schema({
+  UserId      :   {
+    type      :   ObjectId,
+    ref       :   'User'
+  },
+  ReplyId     :   { // uuid
+    type      :   String
+  },
+  Body        :   {
+    type      :   String
+  },
+  ReplyDate   :   {
+    type      :   Date
+  },
+  Likes       :   [replyLikeSchema] // reply likes
+});
+
+let commentSchema = new mongoose.Schema({
+    UserId      :   {
+      type      :     ObjectId,
+      ref       :     'User'
+    },
+    CommentId   :   {
+      type      :   String
+    },
+    CommentDate :   {
+      type      :     Date
+    },
+    Body        :   {
+      type      :    String
+    },
+    Time        :   {
+      type      :     Date
+    },
+    Likes       :   [commentLikeSchema],
+    Replies     :   [replySchema]
+  }
+})
+
 let userSchema = new mongoose.Schema({
   Access    :   {
     type        :   String,
     enum        :   ['Administrator', 'Moderator', 'Customer', 'Not-Assigned']
   },
   Username  :   {
-    type        :   String,
-    required    :   true
+    type        :   String
   },
   _Password :   {
     type        :   String
@@ -64,57 +142,8 @@ let userSchema = new mongoose.Schema({
 LastLogin :   {
   type        :     Date
 },
-Comments  :   [{
-    UserId      :   {
-      type      :     ObjectId,
-      ref       :     'User'
-    },
-    CommentId   :   {
-      type      :   String
-    },
-    CommentDate :   {
-      type      :     Date
-    },
-    Body        :   {
-      type      :    String
-    },
-    Time        :   {
-      type      :     Date
-    },
-    Likes       :   [{
-      LikeId      :   {
-        type      :     String
-      },
-      UserId      :   {
-        type      :   ObjectId,
-        ref       :   'User'
-      }
-    }],
-    Replies     :   [{
-      UserId      :   {
-        type      :   ObjectId,
-        ref       :   'User'
-      },
-      ReplyId     :   { // uuid
-        type      :   String
-      },
-      Body        :   {
-        type      :   String
-      },
-      ReplyDate   :   {
-        type      :   Date
-      },
-      Likes       :   [{
-        LikeId      :   { //uuid
-          type      :     String
-        },
-        UserId      :   {
-          type      :   ObjectId,
-          ref       :   'User'
-        }
-      }] // reply likes
-    }] // replies
-  }]
+Comments  :   [commentSchema],
+Messages  :   [messageSchema]
 });
 
 // CRUD

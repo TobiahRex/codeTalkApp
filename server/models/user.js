@@ -10,7 +10,6 @@ const QS          = require('querystring');
 const BCRYPT      = require('bcryptjs');
 const JWT_SECRET  = process.env.JWT_SECRET;
 const ObjectId    = mongoose.Schema.Types.ObjectId;
-
 const Mail        = require('./mail');
 
 let userSchema = new mongoose.Schema({
@@ -49,22 +48,73 @@ let userSchema = new mongoose.Schema({
     type        :     String
   },
   Social    :   {   // OAuth user ID's
-    facebookId    :   {
-      type          :     String
-    },
-    facebookLink  :   {
-      type          :     String
-    },
-    twitterId     :   {
-      type          :     String
-    },
-    instagramId   :   {
-      type          :     String
-    }
+  facebookId    :   {
+    type          :     String
   },
-  LastLogin :   {
-    type        :     Date
+  facebookLink  :   {
+    type          :     String
+  },
+  twitterId     :   {
+    type          :     String
+  },
+  instagramId   :   {
+    type          :     String
   }
+},
+LastLogin :   {
+  type        :     Date
+},
+Comments  :   [{
+    UserId      :   {
+      type      :     ObjectId,
+      ref       :     'User'
+    },
+    CommentId   :   {
+      type      :   String
+    },
+    CommentDate :   {
+      type      :     Date
+    },
+    Body        :   {
+      type      :    String
+    },
+    Time        :   {
+      type      :     Date
+    },
+    Likes       :   [{
+      LikeId      :   {
+        type      :     String
+      },
+      UserId      :   {
+        type      :   ObjectId,
+        ref       :   'User'
+      }
+    }],
+    Replies     :   [{
+      UserId      :   {
+        type      :   ObjectId,
+        ref       :   'User'
+      },
+      ReplyId     :   { // uuid
+        type      :   String
+      },
+      Body        :   {
+        type      :   String
+      },
+      ReplyDate   :   {
+        type      :   Date
+      },
+      Likes       :   [{
+        LikeId      :   { //uuid
+          type      :     String
+        },
+        UserId      :   {
+          type      :   ObjectId,
+          ref       :   'User'
+        }
+      }] // reply likes
+    }] // replies
+  }]
 });
 
 // CRUD
@@ -147,7 +197,6 @@ userSchema.statics.emailVerify = (token, cb) => {
     });
   });
 };
-
 
 // Auth MiddleWare
 userSchema.statics.authenticate = (userObj, cb) => {

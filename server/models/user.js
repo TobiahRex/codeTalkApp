@@ -54,17 +54,11 @@ let commentSchema = new mongoose.Schema({
     type      :     ObjectId,
     ref       :     'User'
   },
-  CommentId   :   {
-    type      :   String
-  },
   CommentDate :   {
     type      :     Date
   },
   Body        :   {
     type      :    String
-  },
-  Time        :   {
-    type      :     Date
   },
   Likes       :   [commentLikeSchema],
   Replies     :   [replySchema]
@@ -138,8 +132,7 @@ let userSchema = new mongoose.Schema({
   Messages  :   [messageSchema]
 });
 
-
-// CRUD
+// Basic CRUD
 userSchema.statics.getUser = (userId, cb) => {
   if(!userId) return cb({ERROR : `Did Not Provide ID; ${userId}`});
   User.findById(userId, (err, dbUser) => {
@@ -163,7 +156,7 @@ userSchema.statics.removeUser = (userId, cb) => {
   });
 };
 
-// New User Methods
+// Register User
 userSchema.statics.register = function(newUserObj, cb){
   User.findOne({Email : newUserObj.Email}, (err, dbUser)=>{
     if(err || dbUser) return cb(err || {ERROR : `That Email has already been taken.`});
@@ -220,7 +213,7 @@ userSchema.statics.emailVerify = (token, cb) => {
   });
 };
 
-// Auth MiddleWare
+// Verify User Login MiddleWare
 userSchema.statics.authenticate = (userObj, cb) => {
   User.findOne({Email  :   userObj.Email}, (err, dbUser) => {
     if(err || !dbUser) return cb(err || {ERROR : `Login Failed. Username or Password Inccorect. Try Again.`});
@@ -266,9 +259,24 @@ userSchema.methods.createToken = function(){
   return token;
 };
 
-userSchema.statics.addComment = (commentObj, cb) => {
-  
-}
+// Social Methods
+userSchema.statics.addComment = (reqBody ,cb) => {
+  if(!reqBody.user) return err({ERROR : 'No comment found in res. object.'});
+  User.findById(reqBody.user, (err1, dbUser)=> {
+    User.findById(reqBody.person, (err2, dbPerson)=>{
+      if(err1 || err2) return cb(err1 || err2);
+
+      let newComment = {
+        Body        : reqBody.comment,
+        CommentDate : Date.now(),
+        UserId      : dbPerson._id
+      };
+      
+      dbUser.Comments.push(reqbody.comment);
+      dbPerson.Comments.push(newComment);
+    });
+  });
+};
 
 
 let User = mongoose.model('User', userSchema);

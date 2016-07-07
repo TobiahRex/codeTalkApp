@@ -4,6 +4,10 @@ let express = require('express');
 let router  = express.Router();
 let User    = require('../models/user');
 
+router.route('/:user/comment/:person')
+.post((req, res)=> User.addComment(req.body, res.handle));
+
+
 router.post('/register', (req, res) => User.register(req.body, res.handle));
 
 router.route('/login')

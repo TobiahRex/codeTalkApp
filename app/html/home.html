@@ -3,21 +3,34 @@
   <div class="container-fluid home-jumbo">
     <h1 style='color: #000000'>Message Board</h1>
     <br>
-    <div class="col-xs-8 col-xs-offset-2">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h3 class="panel-title">{{dbMessage.Username | json}}</h3></div>
-        <div class="panel-body">
+    <div class="col-xs-12">
+      <div id='' class="template posts-body col-xs-10 col-xs-offset-1 row fadeIn animated panel panel-default">
+        <div class="message-header panel-heading row">
+          <p class="col-xs-6 panel-title"><span class="template-author-name text-success">Template Name</span></p>
+          <p class="col-xs-6  panel-title text-right "><span class="template-time-stamp text-warning">Template Time</span></p>
+        </div>
 
-          <div class="row">
-            <div class="col-xl-offset-4">
-              <img ng-src='{{dbMessage.Avatar}}' alt="" />
+        <div class="form-inline hidden edit-row">
+          <div class="panel-body form-group col-xs-12">
+            <div class="row">
+              <input type='text' class="template-edit-message text-warning form-control lead" value="Edit This Message">
+              <button class="cancel-btn btn btn-danger pull-right">Cancel</button>
+              <button class="save-btn btn btn-success pull-right">Save</button>
             </div>
           </div>
+        </div>
 
-
-
-
-
+        <div class="row post-row">
+            <fieldset>
+              <div class="panel-body">
+              <img class='col-xs-4 message-ava' ng-src='https://scontent.xx.fbcdn.net/v/t1.0-1/13346761_1749559185292051_3715278517141955259_n.jpg?oh=7094856eb6e9cfe77947647d45be46f0&oe=57FF2EAD' />
+              <p class="template-post-message lead">
+                Template Message
+              </p>
+            </div>
+            </fieldset>
+            <!-- <a class="delete-btn btn btn-danger btn-sm text-muted pull-right">Delete</a>
+            <a class="edit-btn btn btn-primary btn-sm text-muted pull-right">Edit</a> -->
         </div>
       </div>
     </div>

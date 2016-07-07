@@ -101,3 +101,7 @@ i.fa.fa-5x.text-primary:hover {
   color   : white;
   cursor : pointer;
 }
+
+img.message-avatar {
+  border-radius: 13%;
+}

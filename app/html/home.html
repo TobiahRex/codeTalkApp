@@ -23,14 +23,20 @@
         <div class="row post-row">
             <fieldset>
               <div class="panel-body">
-              <img class='col-xs-4 message-ava' ng-src='https://scontent.xx.fbcdn.net/v/t1.0-1/13346761_1749559185292051_3715278517141955259_n.jpg?oh=7094856eb6e9cfe77947647d45be46f0&oe=57FF2EAD' />
-              <p class="template-post-message lead">
+              <img class='col-xs-4 message-avatar' ng-src='https://scontent.xx.fbcdn.net/v/t1.0-1/13346761_1749559185292051_3715278517141955259_n.jpg?oh=7094856eb6e9cfe77947647d45be46f0&oe=57FF2EAD' />
+              <p class="template-post-message lead col-xs-8">
                 Template Message
               </p>
+              <div class='row'>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <span>
+                <a class='message-comment-submit' ng-click='submitComment()'><i class="col-xs-11 fa fa-2x fa-comment text-primary"></i></a>
+                <a class='message-like-submit' ng-click='submitLike()'><i class=" fa fa-2x fa-thumbs-up text-primary"></i></a>
+               </span>
             </div>
             </fieldset>
-            <!-- <a class="delete-btn btn btn-danger btn-sm text-muted pull-right">Delete</a>
-            <a class="edit-btn btn btn-primary btn-sm text-muted pull-right">Edit</a> -->
         </div>
       </div>
     </div>

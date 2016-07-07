@@ -105,3 +105,7 @@ i.fa.fa-5x.text-primary:hover {
 img.message-avatar {
   border-radius: 13%;
 }
+
+div.panel-footer {
+  background-color: #262626;
+}

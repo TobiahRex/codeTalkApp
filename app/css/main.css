@@ -107,5 +107,18 @@ img.message-avatar {
 }
 
 div.panel-footer {
-  background-color: #262626;
+  padding-top: 0px;
+  padding-bottom: 15px;
+  background-color: #242424;
 }
+
+i.fa-comment:hover, i.fa-thumbs-up:hover, i.fa-envelope:hover, i.fa-search:hover {
+  color: #FFFFFF ;
+  cursor : pointer;
+};
+i.fa-comment, i.fa-thumbs-up, i.fa-envelope, i.fa-search {
+  padding-bottom: 5px;
+};
+a.message-footer {
+  color: #6E6B6B;
+};

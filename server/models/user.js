@@ -11,7 +11,6 @@ const BCRYPT      = require('bcryptjs');
 const JWT_SECRET  = process.env.JWT_SECRET;
 const ObjectId    = mongoose.Schema.Types.ObjectId;
 const Mail        = require('./mail');
-const Comment     = require('./comment');
 const deepPopulate= require('mongoose-deep-populate')(mongoose);
 
 let commentLikeSchema = new mongoose.Schema({

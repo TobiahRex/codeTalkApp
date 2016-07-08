@@ -16,7 +16,7 @@ router.post('/:user/new/:person', (req, res)=> {
     person : req.params.person,
     comment : req.body.comment
   };
-  User.addComment(reqBody, res.handle);
+  Comment.addComment(reqBody, res.handle);
 });
 
 module.exports = router;

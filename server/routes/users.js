@@ -6,6 +6,7 @@ const User         = require('../models/user');
 const mongoose     = require('mongoose');
 const deepPopulate = require('mongoose-deep-populate')(mongoose);
 
+
 router.post('/register', (req, res) => User.register(req.body, res.handle));
 
 router.route('/login')

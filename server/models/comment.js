@@ -57,19 +57,20 @@ commentSchema.statics.addComment = (reqBody ,cb) => {
     User.findById(reqBody.person, (err2, dbPerson)=>{
       if(err1 || err2) return cb(err1 || err2);
 
-      let newComment = {
+      let newComment = new Comment({
         UserId      : dbPerson._id,
         CommentDate : Date.now(),
         Body        : reqBody.comment
-      };      
-      Comment.create(newComment, (err, newComment)=>{
-        if(err) return cb(err);
-        dbPerson.wComments.push(newComment._id);
-        dbUser.wCommments.push(newComment._id);
+      });
+      newComment.save((err, dbComment)=>{ if(err) return cb(err);
+        console.log('dbComment._id: ', dbComment._id);
+
+        dbPerson.wComments.push(dbComment._id);
+        dbUser.rCommments.push(dbComment._id);
 
         dbPerson.save((err1, savedPerson)=> {
           dbUser.save((err2, savedUser)=> {
-            err2 ? cb(err2) : cb(null, {savedPerson, savedPerson});
+            err2 ? cb(err2) : cb(null, {savedPerson, savedUser});
           });
         });
       });

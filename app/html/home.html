@@ -1,12 +1,12 @@
 
 <div class="well container">
   <div class="row">
-    <h3 class='col-xs-6'><a class='text-warning' ng-click='showMsgBoard()'><i class="fa fa-comments"></i> Comment Board</a></h3>
-    <h3 class='col-xs-6 text-right'><a class='text-success' ng-click='showUsers()'><i class="fa fa-group"></i>All Users</a> </h3>
+    <h3 class='col-xs-6 text-center'><a class='text-warning' ng-click='showMsgBoard()'><i class="fa fa-3x fa-comments"></i></a>Message Board</h3>
+    <h3 class='col-xs-6 text-center'><a class='text-success' ng-click='showUsers()'><i class="fa fa-3x fa-group"></i></a> Users</h3>
   </div>
   <div class="container-fluid home-jumbo">
     <br>
-    <div class="col-xs-12">
+    <!-- <div class="col-xs-12">
       <div id='' class="template posts-body col-xs-10 col-xs-offset-1 row fadeIn animated panel panel-default">
         <div class="message-header panel-heading row">
           <p class="col-xs-6 panel-title"><span class="template-author-name text-success">Template Name</span></p>
@@ -37,7 +37,7 @@
               <span>
                 <a class='message-footer col-xs-3 col-xs-offset-1'><i class="fa fa-2x fa-search " ng-click='gotoProvile({dbUser})'></i></a>
                 <a class='message-footer col-xs-3'><i class="fa fa-2x fa-envelope " ng-click='sendMessage({dbUser})'></i></a>
-                <!-- <span class='col-xs-8'></span> -->
+
                 <a class='message-footer col-xs-3'><i class="fa fa-2x fa-comment " ng-click='submitComment({dbMessage})'></i></a>
                 <a class='message-footer col-xs-2'><i class="fa fa-2x fa-thumbs-up " ng-click='submitLike({dbMessage})'></i></a>
                </span>
@@ -45,7 +45,7 @@
             </fieldset>
         </div>
       </div>
-    </div>
+    </div> -->
       <div class="animated fadeIn" ng-if="commentBoard" >
         <pre>{{comments | json}}</pre>
       </div>

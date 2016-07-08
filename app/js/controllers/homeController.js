@@ -1,5 +1,10 @@
 'use strict';
 
+// TODO : create new comment button
+// TODO : create edit & delete buttons
+// TODO : copy functionality for response buttons to this controller
+
+
 angular.module('fullStackTemplate')
 .controller('homeController', function($scope, $state, $uibModal, toastr, Comment, Auth){
   console.log('homeCtrl');
@@ -39,7 +44,7 @@ angular.module('fullStackTemplate')
   };
 
   $scope.showSuccessMsg = () => toastr.success('Your information has been saved successfully!');
-  $scope.showInfoMsg = () => toastr.info("You've got a new email!", 'Information');
-  $scope.showErrorMsg = () => toastr.error("Your information hasn't been saved!", 'Error');
+  $scope.showInfoMsg    = () => toastr.info("You've got a new email!", 'Information');
+  $scope.showErrorMsg   = () => toastr.error("Your information hasn't been saved!", 'Error');
   $scope.showWarningMsg = () => toastr.warning('Your computer is about to explode!', 'Warning');
 });

@@ -12,22 +12,8 @@ const JWT_SECRET  = process.env.JWT_SECRET;
 const ObjectId    = mongoose.Schema.Types.ObjectId;
 const Mail        = require('./mail');
 const User        = require('./user');
+const deepPopulate= require('mongoose-deep-populate')(mongoose);
 
-let replyLikeSchema = new mongoose.Schema({
-  likeDate    :   {
-    type      :   Date,
-    default   :   Date.now
-  }
-});
-let replySchema = new mongoose.Schema({
-  Body        :   {
-    type      :   String
-  },
-  ReplyDate   :   {
-    type      :   Date
-  },
-  Likes       :   [replyLikeSchema] // reply likes
-});
 let messageSchema = new mongoose.Schema({
   UserId :  {
     type    :     ObjectId,
@@ -40,8 +26,13 @@ let messageSchema = new mongoose.Schema({
   Body      :   {
     type: String
   },
-  Replies   : [replySchema]
+  Replies   : [{
+    type    : ObjectId,
+    ref     : 'Reply'
+  }]
 });
+messageSchema.plugin(deepPopulate);
+
 
 messageSchema.statics.addMessage = (reqBody ,cb) => {
   if(!reqBody.user) return err({ERROR : 'No message found in res. object.'});
@@ -68,6 +59,7 @@ messageSchema.statics.addMessage = (reqBody ,cb) => {
   });
 };
 
+messageSchema.statics.populateAll = cb => Message.find({}).deepPopulate('Replies, Replies.UserId').exec((err, dbMessages)=> err ? cb(err) : cb(null, dbMessages));
 
 let Message = mongoose.model('Message', messageSchema);
 module.exports = Message;

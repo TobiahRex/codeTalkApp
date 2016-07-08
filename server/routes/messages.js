@@ -6,7 +6,7 @@ const Message      = require('../models/message');
 const mongoose     = require('mongoose');
 
 router.route('/')
-.get((req, res)=> Message.find({}).populate('UserId').exec(res.handle))
+.get((req, res)=> Message.find({}).exec(res.handle))
 .delete((req, res)=> Message.remove({}, res.handle));
 
 router.post('/:user/new/:person', (req, res)=> {
@@ -17,5 +17,7 @@ router.post('/:user/new/:person', (req, res)=> {
   };
   Message.addMessage(reqBody, res.handle);
 });
+
+router.get('/populate', (req, res)=> Message.populateAll(res.handle))
 
 module.exports = router;

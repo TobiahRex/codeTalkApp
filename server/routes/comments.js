@@ -18,4 +18,6 @@ router.post('/:user/new/:person', (req, res)=> {
   Comment.addComment(reqBody, res.handle);
 });
 
+router.get('/populate', (req, res)=> Comment.populateAll(res.handle));
+
 module.exports = router;

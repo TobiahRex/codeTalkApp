@@ -20,21 +20,6 @@ let commentLikeSchema = new mongoose.Schema({
     default   :   Date.now
   }
 });
-let replyLikeSchema = new mongoose.Schema({
-  likeDate    :   {
-    type      :   Date,
-    default   :   Date.now
-  }
-});
-let replySchema = new mongoose.Schema({
-  Body        :   {
-    type      :   String
-  },
-  ReplyDate   :   {
-    type      :   Date
-  },
-  Likes       :   [replyLikeSchema] // reply likes
-});
 
 let commentSchema = new mongoose.Schema({
   UserId    :   {
@@ -48,8 +33,9 @@ let commentSchema = new mongoose.Schema({
     type      :    String
   },
   Likes       :   [commentLikeSchema],
-  Replies     :   [replySchema]
+  Replies     :   [{type : ObjectId, ref : 'Reply'}]
 });
+commentSchema.plugin(deepPopulate);
 
 commentSchema.statics.addComment = (reqBody ,cb) => {
   if(!reqBody.user) return err({ERROR : 'No comment found in res. object.'});
@@ -75,6 +61,8 @@ commentSchema.statics.addComment = (reqBody ,cb) => {
     });
   });
 };
+
+commentSchema.statics.populateAll = cb => Comment.find({}).deepPopulate('Replies, Replies.UserId').exec((err, dbComments)=> err ? cb(err) : cb(null, dbComments));
 
 let Comment = mongoose.model('Comment', commentSchema);
 module.exports = Comment;

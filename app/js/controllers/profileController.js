@@ -1,12 +1,17 @@
 'use strict';
+// TODO : Build state params for going to Messagers profile
+// TODO : build Modals for new Message and Reply
+// TODO : if this profile is not the logged in user, add "send message" button
+
 
 angular.module('fullStackTemplate')
 .controller('profileController', function($state, $scope, Auth, dbProfile, dbMessages, Message){
   console.log('profileCtrl');
+  let loginId = $scope.currentUser._id;
   $scope.profile = dbProfile;
 
   $scope.reply = reply => {
-    Message.newReply($scope.currentUser._id, reply)
+    Message.newReply(loginId, reply)
     .then(res=>getMessages())
     .catch(err=>console.log('newMessage Error: ', err))
   };
@@ -15,13 +20,20 @@ angular.module('fullStackTemplate')
     $state.go(`user/${userId}`);
   };
   $scope.sendMessage = userId => {
-
+    // this should be a modal
   };
-  $scope.submitComment = (msgId, comment) =>{
-
+  $scope.submitReply = (msgId, reply) =>{
+    // this should be a modal
+    //
+    // let replyObj = {_id : msgId, Body : reply};
+    // Message.newReply(loginId, replyObj)
+    // .then(res=>getMessages())
+    // .catch(err=>console.log('New Reply Error: ', err));
   };
   $scope.submitLike = msgId => {
-    
+    Message.addLike(msgId)
+    .then(res=>getMessages())
+    .catch(err=>console.log('New Like Error: ', err));
   };
 
   let getMessages = () => {

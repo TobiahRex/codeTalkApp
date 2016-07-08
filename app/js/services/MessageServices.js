@@ -1,4 +1,5 @@
 'use strict';
+// TODO : create addLike route
 
 angular.module('fullStackTemplate')
 .service('Message', function($http){

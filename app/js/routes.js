@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO : build dbUser profile state
+
 angular.module('fullStackTemplate')
 .config(function($stateProvider, $urlRouterProvider, toastrConfig, $authProvider){
   $authProvider.loginUrl = '/api/users/login';

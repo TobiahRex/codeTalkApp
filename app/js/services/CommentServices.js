@@ -1,4 +1,6 @@
 'use strict';
+// TODO : create add Like route
+// TODO : create reply to comment route
 
 angular.module('fullStackTemplate')
 .service('Comment', function($http){

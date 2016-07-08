@@ -11,7 +11,18 @@ angular.module('fullStackTemplate')
     .catch(err=>console.log('newMessage Error: ', err))
   };
 
-  $scope.goToProfile = 
+  $scope.goToProfile = userId => {
+    $state.go(`user/${userId}`);
+  };
+  $scope.sendMessage = userId => {
+
+  };
+  $scope.submitComment = (msgId, comment) =>{
+
+  };
+  $scope.submitLike = msgId => {
+    
+  };
 
   let getMessages = () => {
     Message.getMessages()

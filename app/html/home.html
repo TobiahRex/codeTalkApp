@@ -1,7 +1,7 @@
 
 <div class="well container">
   <div class="row">
-    <h3 class='col-xs-6'><a class='text-warning' ng-click='showMsgBoard()'><i class="fa fa-comments"></i> Message Board</a></h3>
+    <h3 class='col-xs-6'><a class='text-warning' ng-click='showMsgBoard()'><i class="fa fa-comments"></i> Comment Board</a></h3>
     <h3 class='col-xs-6 text-right'><a class='text-success' ng-click='showUsers()'><i class="fa fa-group"></i>All Users</a> </h3>
   </div>
   <div class="container-fluid home-jumbo">
@@ -46,5 +46,11 @@
         </div>
       </div>
     </div>
+      <div class="animated fadeIn" ng-if="commentBoard" >
+        <pre>{{comments | json}}</pre>
+      </div>
+      <div class="animated fadeIn" ng-if="allUsers" >
+        <pre>{{users | json}}</pre>
+      </div>
   </div>
 </div>

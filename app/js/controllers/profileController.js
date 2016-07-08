@@ -6,10 +6,13 @@ angular.module('fullStackTemplate')
 
   $scope.profile = dbProfile;
 
-  $scope.reply = message => {
-    Message.newMessage(message)
-    .then(res=>)
-  }
+  $scope.reply = reply => {
+    Message.newReply($scope.currentUser._id, reply)
+    .then(res=>getMessages())
+    .catch(err=>console.log('newMessage Error: ', err))
+  };
+
+
 
   let getMessages = () => {
     Message.getMessages()

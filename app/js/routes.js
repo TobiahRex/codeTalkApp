@@ -72,9 +72,7 @@ angular.module('fullStackTemplate')
       },
       dbMessages   :     function(Message, $q){
         return Message.getMessages()
-        .then(res=> {
-          res.data.forEach()
-        })
+        .then(res=> $q.resolve(res.data))
         .catch(err=> $q.reject(err))
       }
     }

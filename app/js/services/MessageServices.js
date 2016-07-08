@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('fullStackTemplate')
-.service('Comment', function($http){
+.service('Message', function($http){
 
   this.getMessages = _ => $http.get('/api/messages');
 

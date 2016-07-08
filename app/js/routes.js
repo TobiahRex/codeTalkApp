@@ -70,7 +70,7 @@ angular.module('fullStackTemplate')
           return $q.reject();
         });
       },
-      dbMessages       :     function(Message, $q){
+      dbMessages   :     function(Message, $q){
         return Message.getMessages()
         .then(res=> $q.resolve(res.data))
         .catch(err=> $q.reject(err))

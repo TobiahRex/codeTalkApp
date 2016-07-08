@@ -59,6 +59,11 @@ angular.module('fullStackTemplate')
     templateUrl     :    'html/sign_in/forgot.html',
     controller      :    'forgotController'
   })
+  .state('user',  {
+    url             :     '/user/:id',
+    templateUrl     :     'html/user.html',
+    controller      :     'userProfileController'
+  })
   .state('profile', {
     url             :     '/profile',
     templateUrl     :     'html/profile.html',

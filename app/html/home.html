@@ -6,7 +6,6 @@
   </div>
   <div class="container-fluid home-jumbo">
     <br>
-    <button class="btn btn-primary">sendMessage</button>
     <!-- <div class="col-xs-12">
       <div id='' class="template posts-body col-xs-10 col-xs-offset-1 row fadeIn animated panel panel-default">
         <div class="message-header panel-heading row">
@@ -51,7 +50,7 @@
         <pre>{{comments | json}}</pre>
       </div>
       <div class="animated fadeIn" ng-if="allUsers" ng-repeat='user in users track by $index'>
-        <img class='all-users-pp' style='border-radius: 50%' ng-src='{{user.Avatar}}'/>
+        <a class='all-users-gtp' ui-sref='user({id : user._id})'><img class='all-users-pp' ng-src='{{user.Avatar}}'/></a>
       </div>
       <pre>{{users | json}}</pre>
   </div>

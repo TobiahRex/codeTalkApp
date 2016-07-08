@@ -73,8 +73,15 @@ img.profile-picture {
   max-width: 250px;
   border-radius: 50%;
 }
+img.user-picture {
+  max-width: 250px;
+  border-radius: 50%;
+}
 
 div.profile-fieldset {
+  margin-left: 13%
+}
+div.user-fieldset {
   margin-left: 13%
 }
 
@@ -83,6 +90,10 @@ blockquote {
 }
 
 div.jumbotron.profile-jumbo {
+  max-width: 62%;
+  background-color: rgba(0, 0, 0, 0.33) !important;
+}
+div.jumbotron.user-jumbo {
   max-width: 62%;
   background-color: rgba(0, 0, 0, 0.33) !important;
 }
@@ -126,6 +137,9 @@ ul.nav.navbar-nav > a {
 
 img.all-users-pp {
   border-radius: 50%;
-  width: 50%;
-  display: inline-block;
+  width: 20%;
+}
+
+a.all-users-gtp {
+  cursor: pointer;
 }

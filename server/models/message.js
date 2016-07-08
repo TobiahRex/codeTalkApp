@@ -59,6 +59,7 @@ messageSchema.statics.addMessage = (reqBody ,cb) => {
   });
 };
 
+
 messageSchema.statics.populateAll = cb => Message.find({}).deepPopulate('Replies, Replies.UserId').exec((err, dbMessages)=> err ? cb(err) : cb(null, dbMessages));
 
 let Message = mongoose.model('Message', messageSchema);

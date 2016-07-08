@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('fullStackTemplate')
-.controller('mainController', function($scope, $state, Auth){
+.controller('mainController', function($scope, $state, Auth, ngSocket){
+  let yo = 'yo!';
+  ngSocket.emit('hello', yo);
+
 
   function loginCheck(){
     Auth.getProfile()

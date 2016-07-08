@@ -42,7 +42,7 @@ let commentSchema = new mongoose.Schema({
 commentSchema.plugin(deepPopulate);
 
 commentSchema.statics.addComment = (reqBody ,cb) => {
-  if(!reqBody.user) return err({ERROR : 'No comment found in res. object.'});
+  if(!reqBody.user) return cb({ERROR : 'No comment found in res. object.'});
   User.findById(reqBody.user, (err1, dbUser)=> {
     User.findById(reqBody.person, (err2, dbPerson)=>{
       if(err1 || err2) return cb(err1 || err2);
@@ -67,7 +67,7 @@ commentSchema.statics.addComment = (reqBody ,cb) => {
 };
 
 commentSchema.statics.addLike = (reqBody, cb) =>{
-  if(!reqBody.user) return err({ERROR : 'No comment found in res. object.'});
+  if(!reqBody.comId) return cb({ERROR : 'No comment found in res. object.'});
   Comment.findById(reqBody.comId, (err1, dbComment)=>{
     User.findById(reqBody.personId, (err2, dbPerson)=>{
       if(err1 || err2) return cb(err1 || err2);
@@ -75,11 +75,13 @@ commentSchema.statics.addLike = (reqBody, cb) =>{
       let newLike = {UserId : dbPerson._id};
 
       dbComment.Likes.push(newLike);
-      dbComment.save(err)
-
+      dbComment.save((err, savedComment)=>{
+        err ? cb(err) : cb(null, savedComment);
+      });
     });
   });
 };
+
 
 commentSchema.statics.populateAll = cb => Comment.find({}).deepPopulate('Replies, Replies.UserId').exec((err, dbComments)=> err ? cb(err) : cb(null, dbComments));
 

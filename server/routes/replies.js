@@ -9,6 +9,7 @@ router.route('/')
 .get((req, res)=> Reply.find({}).exec(res.handle))
 .delete((req, res)=> Reply.remove({}, res.handle));
 
+//reply to message or comment
 router.post('/:msgId/message/:person', (req, res)=> {
   let reqBody = {
     msgId     : req.params.msgId,
@@ -26,6 +27,7 @@ router.post('/:commentId/comment/:person', (req, res)=> {
   Reply.addReply_Comment(reqBody, res.handle);
 });
 
+//like a reply on a message or comment
 router.post('/:msgId/message_like/:person', (req, res)=> {
   let reqBody = {
     msgId     : req.params.msgId,

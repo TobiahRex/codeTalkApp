@@ -9,12 +9,12 @@ const router        = express.Router();
 const app           = express();
 const server        = require('http').Server(app);
 const io            = require('socket.io')(server);
+const path          = require('path');
+const Socket        = require('./server/socket');
 const morgan        = require('morgan');
+const mongoose      = require('mongoose');
 const bodyParser    = require('body-parser');
 const cookieParser  = require('cookie-parser');
-const Socket        = require('./server/socket');
-const path          = require('path');
-const mongoose      = require('mongoose');
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());

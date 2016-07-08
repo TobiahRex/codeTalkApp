@@ -2,7 +2,7 @@
 
 var app = angular.module('fullStackTemplate');
 
-app.factory('socket', function (socketFactory) {
+app.factory('ngSocket', function (socketFactory) {
   var service = socketFactory();
   service.forward('error');
   return service;

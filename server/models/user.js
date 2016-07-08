@@ -124,7 +124,7 @@ let userSchema = new mongoose.Schema({
   }],
   rMessages  :  [messageSchema]
 });
-// userSchema.plugin(deepPopulate);
+userSchema.plugin(deepPopulate);
 
 // Basic CRUD
 userSchema.statics.getUser = (userId, cb) => {
@@ -134,8 +134,8 @@ userSchema.statics.getUser = (userId, cb) => {
   });
 };
 
-userSchema.statics.getUsers = (cb) =>{
-  User.find({}).exec((err, dbUsers)=>{
+userSchema.statics.getAllPopulate = (cb) =>{
+  User.find({}).deepPopulate('rComments, wComments').exec((err, dbUsers)=>{
     err ? cb(err) : cb(null, dbUsers);
   });
 };

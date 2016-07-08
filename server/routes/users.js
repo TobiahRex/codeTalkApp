@@ -6,7 +6,6 @@ const User         = require('../models/user');
 const mongoose     = require('mongoose');
 const deepPopulate = require('mongoose-deep-populate')(mongoose);
 
-
 router.post('/register', (req, res) => User.register(req.body, res.handle));
 
 router.route('/login')
@@ -21,7 +20,6 @@ router.get('/profile', User.authorize({Admin : false}), (req, res)=> res.send(re
 
 router.get('/verify/:token', (req, res)=> User.emailVerify(req.params.token, (err, dbUser, result) => err ? res.status(400).send(err) : res.redirect('/#/login')));
 
-
 router.put('/:id/toggle_admin', User.authorize({Admin : true}), (req, res)=>{
   User.findById(req.params.id, (err, dbUser)=>{
     if(err) return res.status(400).send(err);
@@ -32,8 +30,8 @@ router.put('/:id/toggle_admin', User.authorize({Admin : true}), (req, res)=>{
   });
 });
 
-router.put('/:id/make_admin', (req, res)=> User.findByIdAndUpdate(req.params.id, {$set : {Admin : true}}, {new : true}, res.handle));
 
+router.put('/:id/make_admin', (req, res)=> User.findByIdAndUpdate(req.params.id, {$set : {Admin : true}}, {new : true}, res.handle));
 router.delete('/comments', (req, res)=> {
   User.find({}, (err, dbUsers) =>{
     dbUsers.forEach(user=>{
@@ -46,9 +44,10 @@ router.delete('/comments', (req, res)=> {
     });
   });
 });
+router.get('/populate', (req, res)=> User.getAllPopulate(res.handle));
 
 router.route('/')
-.get((req, res) => User.getUsers(res.handle))
+.get((req, res) => User.find({}, res.handle))
 .delete((req, res)=> User.remove({}, res.handle));
 
 router.route('/:id')

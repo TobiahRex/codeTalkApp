@@ -63,10 +63,8 @@ commentSchema.statics.addComment = (reqBody ,cb) => {
         Body        : reqBody.comment
       });
       newComment.save((err, dbComment)=>{ if(err) return cb(err);
-        console.log('dbComment._id: ', dbComment._id);
-
+        dbUser.rComments.push(dbComment._id);
         dbPerson.wComments.push(dbComment._id);
-        dbUser.rCommments.push(dbComment._id);
 
         dbPerson.save((err1, savedPerson)=> {
           dbUser.save((err2, savedUser)=> {

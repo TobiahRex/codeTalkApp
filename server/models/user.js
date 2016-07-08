@@ -11,7 +11,7 @@ const BCRYPT      = require('bcryptjs');
 const JWT_SECRET  = process.env.JWT_SECRET;
 const ObjectId    = mongoose.Schema.Types.ObjectId;
 const Mail        = require('./mail');
-
+const deepPopulate= require('mongoose-deep-populate')(mongoose);
 
 let commentLikeSchema = new mongoose.Schema({
   likeDate    :   {
@@ -63,9 +63,9 @@ let messageSchema = new mongoose.Schema({
   Replies   : [replySchema]
 });
 let userSchema = new mongoose.Schema({
-  Access    :   {
-    type        :   String,
-    enum        :   ['Administrator', 'Moderator', 'Customer', 'Not-Assigned']
+  Admin    :   {
+    type        :   Boolean,
+    default     :   false
   },
   Username  :   {
     type        :   String
@@ -110,20 +110,33 @@ let userSchema = new mongoose.Schema({
     type          :     String
   }
 },
-LastLogin :   {
-  type        :     Date
-},
-wComments  :  [commentSchema],
-wMessages  :  [messageSchema],
-rComments  :  []
-rMessages  :  []
+  LastLogin :   {
+    type        :     Date
+  },
+  wComments  :  [{type : ObjectId, ref : 'Comment'}],
+  wMessages  :  [messageSchema],
+  rComments  :  [{
+    type      :   ObjectId,
+    ref       :   'Comment'
+  }],
+  rMessages  :  [{
+    type      :   ObjectId,
+    ref       :   'Comment'
+  }]
 });
+// userSchema.plugin(deepPopulate);
 
 // Basic CRUD
 userSchema.statics.getUser = (userId, cb) => {
   if(!userId) return cb({ERROR : `Did Not Provide ID; ${userId}`});
   User.findById(userId, (err, dbUser) => {
     err ? cb(err) : cb(null, dbUser);
+  });
+};
+
+userSchema.statics.getUsers = (cb) =>{
+  User.find({}).populate('wComments').exec((err, dbUsers)=>{
+    err ? cb(err) : cb(null, dbUsers);
   });
 };
 
@@ -217,27 +230,29 @@ userSchema.statics.authenticate = (userObj, cb) => {
   });
 };
 
-userSchema.statics.loginVerify = function(req, res, next){
-  let tokenHeader = req.headers.authorization;
-  console.log('tokenHeader: ', tokenHeader);
-  if(!tokenHeader) return res.status(400).send({ERROR : 'User not found.'});
-  let token = tokenHeader.split(' ')[1];
+userSchema.statics.authorize = function(clearance = {Admin : false}){
+  return function(req, res, next){
+    let tokenHeader = req.headers.authorization;
+    console.log('tokenHeader: ', tokenHeader);
+    if(!tokenHeader) return res.status(400).send({ERROR : 'User not found.'});
+    let token = tokenHeader.split(' ')[1];
 
-  JWT.verify(token, JWT_SECRET, (err, payload) => {
-    if(err) return res.status(401).send({ERROR : `HACKER! You are not Authorized!`});
-    User.findById(payload._id)
-    .select({_Password : false})
-    .exec((err, dbUser)=> {
-      if(err || !dbUser){
-        return
-        res.clearCookie('accessToken')
-        .status(400)
-        .send(err || {error : `User Not Found.`});
-      }; // else
-      req.user = dbUser;
-      next();
+    JWT.verify(token, JWT_SECRET, (err, payload) => {
+      if(err) return res.status(401).send({ERROR : `HACKER! You are not Authorized!`});
+      User.findById(payload._id)
+      .select({_Password : false})
+      .exec((err, dbUser)=> {
+        if(err || !dbUser){
+          return
+          res.clearCookie('accessToken')
+          .status(400)
+          .send(err || {error : `User Not Found.`});
+        }; // else
+        req.user = dbUser;
+        next();
+      });
     });
-  });
+  };
 };
 
 userSchema.methods.createToken = function(){
@@ -251,32 +266,27 @@ userSchema.statics.addComment = (reqBody ,cb) => {
   console.log("reqbody: ", reqBody);
   if(!reqBody.user) return err({ERROR : 'No comment found in res. object.'});
   User.findById(reqBody.user, (err1, dbUser)=> {
-    console.log('err1: ', err1);
-    console.log('dbUser: ', dbUser);
     User.findById(reqBody.person, (err2, dbPerson)=>{
       if(err1 || err2) return cb(err1 || err2);
 
-      let wComment = {
+      let newComment = new Comment({
         UserId      : dbPerson._id,
         CommentDate : Date.now(),
         Body        : reqBody.comment
-      };
-      dbPerson.Comments.push(wComment);
-      dbPerson.save((err, savedPerson)=> {
-        if(err) return cb(err); 
-        console.log(savePerson.Comments);
       });
 
-      // dbUser.Comments.push(newComment);
-      //
-      // dbUser.save((err2, savedUser)=> {
-      //   console.log('savedUser: ', savedUser);
-      //   // err2 ? cb(err2) : cb(null, {savedPerson, savedUser});
-      // });
+      dbPerson.wComments.push(newComment._id);
+      dbUser.rComments.push(newComment._id);
+
+      dbPerson.save((err1, savedPerson)=> {
+        dbUser.save((err2, savedUser)=> {
+          err2 ? cb(err2) : cb(null, {savedPerson, savedPerson});
+        });
+      });
     });
   });
 };
 
-
+let Comment = mongoose.model('Comment', commentSchema);
 let User = mongoose.model('User', userSchema);
 module.exports = User;

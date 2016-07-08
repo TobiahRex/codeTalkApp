@@ -45,7 +45,7 @@ router.post('/facebook', (req, res) =>{
           let token = req.header('Authorization').split(' ')[1];
           let payload = JWT.verify(token, JWT_SECRET);
           console.log('PAYLOAD: ', payload)
-          User.findById(payload._id, (err, dbUser)=> {
+          User.findById(payload._id, (err, dbUser)=> {          
             if (!dbUser) return res.status(400).send({ ERROR: 'User not found' });
 
             dbUser.Email              = profile.email,

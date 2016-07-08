@@ -69,9 +69,13 @@ angular.module('fullStackTemplate')
           $state.go('login');
           return $q.reject();
         });
+      },
+      dbUsers       :     function(Auth, $q){
+        return Auth.getUsers()
+        .then(res=> $q.resolve(res.data))
+        .catch(err=> $q.reject(err))
       }
     }
-
   });
   $urlRouterProvider.otherwise('/');
 

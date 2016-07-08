@@ -1,8 +1,11 @@
 'use strict';
 
-let express = require('express');
-let router  = express.Router();
-let User    = require('../models/user');
+const express      = require('express');
+const router       = express.Router();
+const User         = require('../models/user');
+const mongoose     = require('mongoose');
+const deepPopulate = require('mongoose-deep-populate')(mongoose);
+
 
 router.post('/:user/comment/:person', (req, res)=> {
   let reqBody = {
@@ -23,12 +26,12 @@ router.route('/login')
 
 router.post('/logout', (req, res)=> res.clearCookie('accessToken').status(200).send({SUCCESS : `User has been Logged out.`}));
 
-router.get('/profile', User.loginVerify, (req, res)=> res.send(req.user));
+router.get('/profile', User.authorize({Admin : false}), (req, res)=> res.send(req.user));
 
 router.get('/verify/:token', (req, res)=> User.emailVerify(req.params.token, (err, dbUser, result) => err ? res.status(400).send(err) : res.redirect('/#/login')));
 
 router.route('/')
-.get((req, res) => User.find({}, res.handle))
+.get((req, res) => User.getUsers(res.handle))
 .delete((req, res)=> User.remove({}, res.handle));
 
 router.route('/:id')
@@ -38,5 +41,17 @@ router.route('/:id')
   let userObj = {id : req.params.id, body : req.body};
   User.updateUser(userObj, res.handle);
 });
+
+router.put('/:id/toggle_admin', User.authorize({Admin : true}), (req, res)=>{
+  User.findById(req.params.id, (err, dbUser)=>{
+    if(err) return res.status(400).send(err);
+    dbuser.Admin = !dbUser.Admin;
+    dbUser.save((err, saveUser)=>{
+      res.status(err ? 400 : 200).send(err || savedUser);
+    });
+  });
+});
+
+router.put('/:id/make_admin', (req, res)=> User.findByIdAndUpdate(req.params.id, {$set : {Admin : true}}, {new : true}, res.handle));
 
 module.exports = router;

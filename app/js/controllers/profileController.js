@@ -5,5 +5,12 @@ angular.module('fullStackTemplate')
   console.log('profileCtrl');
 
   $scope.profile = dbProfile;
-  $scope.messages = dbMessages;
+
+  let $scope.messages = dbMessage.forEach(message => {
+    let messages = {user : [], other : []};
+    message._id === user._id
+    ? messages.user.push(message)
+    : messages.other.push(message);
+    return messages;
+  });
 });

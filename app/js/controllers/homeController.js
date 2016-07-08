@@ -19,7 +19,7 @@ angular.module('fullStackTemplate')
   };
   let dbUsers = () =>{
     Auth.getUsers()
-    .then(res => $scope.users = res.data);
+    .then(res => $scope.users = res.data)
     .catch(err => $scope.users = err);
   };
 

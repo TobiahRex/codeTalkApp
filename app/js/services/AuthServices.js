@@ -5,6 +5,8 @@ angular.module('fullStackTemplate')
 
   this.getUsers = _ => $http.get('/api/users/');
 
+  this.getUser  = id => $http.get(`/api/users/${id}`)
+
   this.loginUser = userObj => $http.post('/api/users/login', userObj);
 
   this.logoutUser = _ => $http.post('/api/users/logout');

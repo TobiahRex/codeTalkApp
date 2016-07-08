@@ -68,13 +68,13 @@ angular.module('fullStackTemplate')
         return Message.getMessages()
         .then(res=> $q.resolve(res.data))
         .catch(err=> $q.reject(err))
+      },
+      dbUserProfile     :   function(Auth, $q, $stateParams){
+        return Auth.getUser($stateParams.id)
+        .then(res=> $q.resolve(res.data))
+        .catch(err=> $q.reject(err));
       }
-    },
-    userProfile     :   function(Auth, $q, $stateParams){
-      return Auth.getUser($stateParams.id)
-      .then(res=> $q.resolve(res.data))
-      .catch(err=> $q.reject(err));
-    };
+    }
   })
   .state('profile', {
     url             :     '/profile',

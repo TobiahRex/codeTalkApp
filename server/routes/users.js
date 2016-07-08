@@ -47,7 +47,7 @@ router.delete('/comments', (req, res)=> {
 router.get('/populate', (req, res)=> User.getAllPopulate(res.handle));
 
 router.route('/')
-.get((req, res) => User.find({}).select('-_Password').exec(res.handle))
+.get((req, res) => User.find({Email : {$ne : req.user.Email}}).select('-_Password').exec(res.handle))
 .delete((req, res)=> User.remove({}, res.handle));
 
 router.route('/:id')

@@ -4,16 +4,15 @@
 // TODO : if this profile is not the logged in user, add "send message" button
 
 angular.module('fullStackTemplate')
-.controller('userProfileController', function($state, $scope, Auth, dbMessages, Message, $stateParams){
+.controller('userProfileController', function($state, $scope, $stateParams, Auth, Message, dbMessages, dbUserProfile){
   console.log('userProfileController');
   let loginId = $scope.currentUser._id;
   let userId  = $stateParams.id;
 
-  console.log('userId: ', $stateParams.id);
-  $scope.profile = dbProfile;
+  $scope.user = dbUserProfile;
 
   $scope.reply = reply => {
-    Message.newReply(loginId, reply)
+    Message.newReply(userId, reply)
     .then(res=>getMessages())
     .catch(err=>console.log('newMessage Error: ', err))
   };
@@ -47,7 +46,7 @@ angular.module('fullStackTemplate')
     console.log('msgs ', msgs);
     $scope.messages = msgs.map(message => {
       let messages = {user : [], other : []};
-      message.UserId._id === $scope.currentUser._id
+      message.UserId._id === userId
       ? messages.user.push(message)
       : messages.other.push(message);
       console.log('$scope.messages', $scope.messages);

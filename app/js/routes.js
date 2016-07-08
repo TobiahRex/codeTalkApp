@@ -62,7 +62,19 @@ angular.module('fullStackTemplate')
   .state('user',  {
     url             :     '/user/:id',
     templateUrl     :     'html/user.html',
-    controller      :     'userProfileController'
+    controller      :     'userProfileController',
+    resolve         :     {
+      dbMessages   :     function(Message, $q){
+        return Message.getMessages()
+        .then(res=> $q.resolve(res.data))
+        .catch(err=> $q.reject(err))
+      }
+    },
+    userProfile     :   function(Auth, $q, $stateParams){
+      return Auth.getUser($stateParams.id)
+      .then(res=> $q.resolve(res.data))
+      .catch(err=> $q.reject(err));
+    };
   })
   .state('profile', {
     url             :     '/profile',

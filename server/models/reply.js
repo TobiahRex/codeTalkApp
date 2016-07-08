@@ -82,13 +82,32 @@ replySchema.statics.addLike_CommentReply = (reqBody, cb) => {
     User.findById(reqBody.personId, (err2, dbPerson)=>{
       if(err1 || err2) return cb(err1 || err2);
 
-      let newLike = {
-        Userid : dbPerson._id,
-      };
+      let newLike = {Userid : dbPerson._id};
 
-    })
+      dbComment.Likes.push(newLike);
+      dbComment.save((err, savedComment)=>{
+        err ? cb(err) : cb(null, savedComment);
+      });
+    });
   });
 };
+
+replySchema.statics.addLike_MessageReply = (reqBody, cb) => {
+  if(!reqBody.msgReplyId) return cb({ERROR : 'No Reply ID in res. object.'});
+  Message.findById(reqBody.msgReplyId, (err1, dbMessage)=>{
+    User.findById(reqBody.personId, (err2, dbPerson)=>{
+      if(err1 || err2) return cb(err1 || err2);
+
+      let newLike = { Userid : dbPerson._id};
+      
+      dbMessage.Likes.push(newLike);
+      dbMessage.save((err, savedMessage)=>{
+        err ? cb(err) : cb(null, savedMessage);
+      });
+    });
+  });
+};
+
 
 
 let Reply = mongoose.model('Reply', replySchema);

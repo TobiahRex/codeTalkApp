@@ -26,6 +26,23 @@ router.post('/:commentId/comment/:person', (req, res)=> {
   Reply.addReply_Comment(reqBody, res.handle);
 });
 
+router.post('/:msgId/message_like/:person', (req, res)=> {
+  let reqBody = {
+    msgId     : req.params.msgId,
+    personId  : req.params.person,
+    reply     : req.body.reply
+  };
+  Reply.addLike_MessageReply(reqBody, res.handle);
+});
+router.post('/:commentId/comment_like/:person', (req, res)=> {
+  let reqBody = {
+    comId     : req.params.commentId,
+    personId  : req.params.person,
+    reply     : req.body.reply
+  };
+  Reply.addLike_CommentReply(reqBody, res.handle);
+});
+
 router.get('/populate', (req, res)=> Reply.find({}).populate('UserId').exec(res.handle));
 
 module.exports = router;

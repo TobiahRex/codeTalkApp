@@ -15,6 +15,10 @@ const User        = require('./user');
 const deepPopulate= require('mongoose-deep-populate')(mongoose);
 
 let commentLikeSchema = new mongoose.Schema({
+  UserId      :   {
+    type      :   ObjectId,
+    ref       :   'User'
+  },
   likeDate    :   {
     type      :   Date,
     default   :   Date.now
@@ -58,6 +62,21 @@ commentSchema.statics.addComment = (reqBody ,cb) => {
           });
         });
       });
+    });
+  });
+};
+
+commentSchema.statics.addLike = (reqBody, cb) =>{
+  if(!reqBody.user) return err({ERROR : 'No comment found in res. object.'});
+  Comment.findById(reqBody.comId, (err1, dbComment)=>{
+    User.findById(reqBody.personId, (err2, dbPerson)=>{
+      if(err1 || err2) return cb(err1 || err2);
+
+      let newLike = {UserId : dbPerson._id};
+
+      dbComment.Likes.push(newLike);
+      dbComment.save(err)
+
     });
   });
 };

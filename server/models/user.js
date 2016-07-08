@@ -11,6 +11,7 @@ const BCRYPT      = require('bcryptjs');
 const JWT_SECRET  = process.env.JWT_SECRET;
 const ObjectId    = mongoose.Schema.Types.ObjectId;
 const Mail        = require('./mail');
+const Comment     = require('./comment');
 const deepPopulate= require('mongoose-deep-populate')(mongoose);
 
 let commentLikeSchema = new mongoose.Schema({
@@ -113,16 +114,16 @@ let userSchema = new mongoose.Schema({
   LastLogin :   {
     type        :     Date
   },
-  wComments  :  [{type : ObjectId, ref : 'Comment'}],
+  wComments  :  [{
+    type      : ObjectId, 
+    ref       : 'Comment'
+  }],
   wMessages  :  [messageSchema],
   rComments  :  [{
     type      :   ObjectId,
     ref       :   'Comment'
   }],
-  rMessages  :  [{
-    type      :   ObjectId,
-    ref       :   'Comment'
-  }]
+  rMessages  :  [messageSchema]
 });
 // userSchema.plugin(deepPopulate);
 
@@ -135,7 +136,7 @@ userSchema.statics.getUser = (userId, cb) => {
 };
 
 userSchema.statics.getUsers = (cb) =>{
-  User.find({}).populate('wComments').exec((err, dbUsers)=>{
+  User.find({}).exec((err, dbUsers)=>{
     err ? cb(err) : cb(null, dbUsers);
   });
 };
@@ -287,6 +288,5 @@ userSchema.statics.addComment = (reqBody ,cb) => {
   });
 };
 
-let Comment = mongoose.model('Comment', commentSchema);
 let User = mongoose.model('User', userSchema);
 module.exports = User;

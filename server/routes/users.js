@@ -53,5 +53,16 @@ router.put('/:id/toggle_admin', User.authorize({Admin : true}), (req, res)=>{
 });
 
 router.put('/:id/make_admin', (req, res)=> User.findByIdAndUpdate(req.params.id, {$set : {Admin : true}}, {new : true}, res.handle));
+router.delete('/comments', (req, res)=> {
+  User.find({}).exec(err, dbUsers=>{
+    dbUsers.forEach(user=>{
+      user.wComments = [];
+      user.rComments = [];
+      user.save(err=>{
+        res.status(err ? 400 : 200).send(err || {SUCCESS : 'Comments cleared.'});
+      });
+    });
+  });
+});
 
 module.exports = router;

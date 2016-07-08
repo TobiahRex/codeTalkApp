@@ -13,6 +13,28 @@ const ObjectId    = mongoose.Schema.Types.ObjectId;
 const Mail        = require('./mail');
 const deepPopulate= require('mongoose-deep-populate')(mongoose);
 
+let commentLikeSchema = new mongoose.Schema({
+  likeDate    :   {
+    type      :   Date,
+    default   :   Date.now
+  }
+});
+let replyLikeSchema = new mongoose.Schema({
+  likeDate    :   {
+    type      :   Date,
+    default   :   Date.now
+  }
+});
+let replySchema = new mongoose.Schema({
+  Body        :   {
+    type      :   String
+  },
+  ReplyDate   :   {
+    type      :   Date
+  },
+  Likes       :   [replyLikeSchema] // reply likes
+});
+
 let commentSchema = new mongoose.Schema({
   UserId    :   {
     type    :   ObjectId,

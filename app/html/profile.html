@@ -23,8 +23,55 @@
       </ul>
     </div>
 
-    <div class="panel panel-default tab-content col-xs-10 col-xs-offset-1">
+    <div class="panel panel-default tab-content col-xs-12">
       <div class="panel-body lead tab-pane fade" id="messages">
+        <div class="messages" ng-repeat='other in messages[0].other'>
+          <div class="profile-message col-xs-12">
+            <div id='' class="template posts-body col-xs-10 col-xs-offset-1 row fadeIn animated panel panel-default">
+              <div class="message-header panel-heading row">
+                <p class="col-xs-6 panel-title lead"><span class="template-author-name text-success">{{other.UserId.Username}}</span></p>
+                <p class="col-xs-6  panel-title text-right ">
+                  <!-- <span class="template-author-name text-warning">Last login: {{other.UserId.LastLogin | date}}</span>
+                  <span style='color : white'> | </span> -->
+                  <span class="template-time-stamp text-primary">{{other.MessageDate | date : format : medium}}
+                  </span>
+                </p>
+              </div>
+
+              <div class="form-inline hidden edit-row">
+                <div class="panel-body form-group col-xs-12">
+                  <div class="row">
+                    <input type='text' class="template-edit-message text-warning form-control lead" value="Edit This Message">
+                    <button class="cancel-btn btn btn-danger pull-right">Cancel</button>
+                    <button class="save-btn btn btn-success pull-right">Save</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row post-row">
+                <fieldset>
+                  <div class="panel-body">
+                    <img class='col-xs-4 message-avatar' ng-src='{{other.UserId.Avatar}}' />
+                    <p class="template-post-message text-primary lead col-xs-8">
+                      {{other.Body}}
+                    </p>
+                    <div class='row'>
+                    </div>
+                  </div>
+                  <div class="panel-footer">
+                    <span>
+                      <a class='message-footer col-xs-3 col-xs-offset-1'><i class="fa fa-2x fa-search " ng-click='gotoProfile({other.UserId})'></i></a>
+                      <a class='message-footer col-xs-3'><i class="fa fa-2x fa-envelope " ng-click='sendMessage({other.UserId})'></i></a>
+                      <!-- <span class='col-xs-8'></span> -->
+                      <a class='message-footer col-xs-3'><i class="fa fa-2x fa-comment " ng-click='submitComment({other})'></i></a>
+                      <a class='message-footer col-xs-2'><i class="fa fa-2x fa-thumbs-up " ng-click='submitLike({other})'></i></a>
+                    </span>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+        </div> <!-- end of ng-repeat -->
         <p class="lead"><pre>{{messages | json}}</pre></p>
       </div>
       <div class="panel-body lead tab-pane fade" id="friends">

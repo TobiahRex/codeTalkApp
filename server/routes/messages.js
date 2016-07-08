@@ -6,7 +6,7 @@ const Message      = require('../models/message');
 const mongoose     = require('mongoose');
 
 router.route('/')
-.get((req, res)=> Message.find({}, res.handle))
+.get((req, res)=> Message.find({}).populate('UserId').exec(res.handle))
 .delete((req, res)=> Message.remove({}, res.handle));
 
 router.post('/:user/new/:person', (req, res)=> {

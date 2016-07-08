@@ -3,7 +3,6 @@
 angular.module('fullStackTemplate')
 .controller('profileController', function($state, $scope, Auth, dbProfile, dbMessages, Message){
   console.log('profileCtrl');
-
   $scope.profile = dbProfile;
 
   $scope.reply = reply => {
@@ -12,17 +11,17 @@ angular.module('fullStackTemplate')
     .catch(err=>console.log('newMessage Error: ', err))
   };
 
-
+  $scope.goToProfile = 
 
   let getMessages = () => {
     Message.getMessages()
-    .then(res.data=>filterMessages(res.data))
+    .then(res=>filterMessages(res.data))
     .catch(err=>console.log('getMessage Error: ', err));
   };
   let filterMessages = (msgs) => {
     $scope.messages = msgs.map(message => {
       let messages = {user : [], other : []};
-      message._id === $scope.currentUser._id
+      message.UserId._id === $scope.currentUser._id
       ? messages.user.push(message)
       : messages.other.push(message);
       return messages;

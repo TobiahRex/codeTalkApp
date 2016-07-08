@@ -2,9 +2,8 @@
 
 const express      = require('express');
 const router       = express.Router();
-const Message      = require('../models/comment');
+const Message      = require('../models/message');
 const mongoose     = require('mongoose');
-const deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 router.route('/')
 .get((req, res)=> Message.find({}, res.handle))
@@ -14,9 +13,9 @@ router.post('/:user/new/:person', (req, res)=> {
   let reqBody = {
     user : req.params.user,
     person : req.params.person,
-    comment : req.body.comment
+    message : req.body.message
   };
-  Message.addComment(reqBody, res.handle);
+  Message.addMessage(reqBody, res.handle);
 });
 
 module.exports = router;

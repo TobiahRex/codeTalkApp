@@ -48,20 +48,7 @@ let commentSchema = new mongoose.Schema({
   Likes       :   [commentLikeSchema],
   Replies     :   [replySchema]
 })
-let messageSchema = new mongoose.Schema({
-  UserId :  {
-    type    :     ObjectId,
-    ref     :     'User'
-  },
-  MessageDate : {
-    type    :   Date,
-    default :   Date.now
-  },
-  Body      :   {
-    type: String
-  },
-  Replies   : [replySchema]
-});
+
 let userSchema = new mongoose.Schema({
   Admin    :   {
     type        :   Boolean,
@@ -117,12 +104,18 @@ let userSchema = new mongoose.Schema({
     type      : ObjectId,
     ref       : 'Comment'
   }],
-  wMessages  :  [messageSchema],
+  wMessages  :  [{
+    type      : ObjectId,
+    ref       : 'Message'
+  }],
   rComments  :  [{
     type      :   ObjectId,
     ref       :   'Comment'
   }],
-  rMessages  :  [messageSchema]
+  rMessages  :  [{
+    type      :   ObjectId,
+    ref       :   'Message'
+  }]
 });
 userSchema.plugin(deepPopulate);
 
@@ -135,7 +128,7 @@ userSchema.statics.getUser = (userId, cb) => {
 };
 
 userSchema.statics.getAllPopulate = (cb) =>{
-  User.find({}).deepPopulate('rComments, wComments').exec((err, dbUsers)=>{
+  User.find({}).deepPopulate('rComments, wComments, rMessages, wMessages').exec((err, dbUsers)=>{
     err ? cb(err) : cb(null, dbUsers);
   });
 };

@@ -7,7 +7,6 @@ div.home-jumbo {
   background-image: url('/css/images/codecode.jpg');
 };
 
-
 hr {
   border-color: #0F0F0F
 }
@@ -123,4 +122,10 @@ ul.nav.navbar-nav > a {
   color: #2a9fd6 !important;
   background-color: transparent;
   font-size: 18px;
+}
+
+img.all-users-pp {
+  border-radius: 50%;
+  width: 50%;
+  display: inline-block;
 }

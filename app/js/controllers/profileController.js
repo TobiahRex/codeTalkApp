@@ -42,11 +42,13 @@ angular.module('fullStackTemplate')
     .catch(err=>console.log('getMessage Error: ', err));
   };
   let filterMessages = (msgs) => {
+    console.log('msgs ', msgs);
     $scope.messages = msgs.map(message => {
       let messages = {user : [], other : []};
       message.UserId._id === $scope.currentUser._id
       ? messages.user.push(message)
       : messages.other.push(message);
+      console.log('$scope.messages', $scope.messages);
       return messages;
     });
   };

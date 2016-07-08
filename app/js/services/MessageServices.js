@@ -4,7 +4,7 @@
 angular.module('fullStackTemplate')
 .service('Message', function($http){
 
-  this.getMessages = _ => $http.get('/api/messages');
+  this.getMessages = _ => $http.get('/api/messages/populate');
 
   this.newMessage = (rUser, message, wUser) => $http.post(`/api/messages/${rUser}/new/${wUser}`, {message});
 

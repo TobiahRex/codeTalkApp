@@ -3,7 +3,7 @@
 angular.module('fullStackTemplate')
 .service('Auth', function($http){
 
-  this.getUsers = _ => $http.get('/api/users');
+  this.getUsers = _ => $http.get('/api/users/');
 
   this.loginUser = userObj => $http.post('/api/users/login', userObj);
 

@@ -64,14 +64,14 @@ angular.module('fullStackTemplate')
     resolve         :     {
       dbProfile   :     function(Auth, $q, $state){
         return Auth.getProfile()
+        .then(res=> $q.resolve(res.data))
         .catch(err=>{
-          console.log('err: ', err);
           $state.go('login');
           return $q.reject();
         });
       },
-      dbUsers       :     function(Auth, $q){
-        return Auth.getUsers()
+      dbMessages       :     function(Message, $q){
+        return Message.getMessages()
         .then(res=> $q.resolve(res.data))
         .catch(err=> $q.reject(err))
       }

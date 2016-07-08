@@ -115,7 +115,7 @@ let userSchema = new mongoose.Schema({
     type        :     Date
   },
   wComments  :  [{
-    type      : ObjectId, 
+    type      : ObjectId,
     ref       : 'Comment'
   }],
   wMessages  :  [messageSchema],
@@ -260,32 +260,6 @@ userSchema.methods.createToken = function(){
   let thisId = this._id;
   let token = JWT.sign({_id : this._id}, JWT_SECRET, {expiresIn : '1 day'});
   return token;
-};
-
-// Social Methods
-userSchema.statics.addComment = (reqBody ,cb) => {
-  console.log("reqbody: ", reqBody);
-  if(!reqBody.user) return err({ERROR : 'No comment found in res. object.'});
-  User.findById(reqBody.user, (err1, dbUser)=> {
-    User.findById(reqBody.person, (err2, dbPerson)=>{
-      if(err1 || err2) return cb(err1 || err2);
-
-      let newComment = new Comment({
-        UserId      : dbPerson._id,
-        CommentDate : Date.now(),
-        Body        : reqBody.comment
-      });
-
-      dbPerson.wComments.push(newComment._id);
-      dbUser.rComments.push(newComment._id);
-
-      dbPerson.save((err1, savedPerson)=> {
-        dbUser.save((err2, savedUser)=> {
-          err2 ? cb(err2) : cb(null, {savedPerson, savedPerson});
-        });
-      });
-    });
-  });
 };
 
 let User = mongoose.model('User', userSchema);

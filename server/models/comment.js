@@ -11,6 +11,7 @@ const BCRYPT      = require('bcryptjs');
 const JWT_SECRET  = process.env.JWT_SECRET;
 const ObjectId    = mongoose.Schema.Types.ObjectId;
 const Mail        = require('./mail');
+const User        = require('./user');
 const deepPopulate= require('mongoose-deep-populate')(mongoose);
 
 let commentLikeSchema = new mongoose.Schema({
@@ -49,6 +50,32 @@ let commentSchema = new mongoose.Schema({
   Likes       :   [commentLikeSchema],
   Replies     :   [replySchema]
 });
+
+commentSchema.statics.addComment = (reqBody ,cb) => {
+  if(!reqBody.user) return err({ERROR : 'No comment found in res. object.'});
+  User.findById(reqBody.user, (err1, dbUser)=> {
+    User.findById(reqBody.person, (err2, dbPerson)=>{
+      if(err1 || err2) return cb(err1 || err2);
+
+      let newComment = {
+        UserId      : dbPerson._id,
+        CommentDate : Date.now(),
+        Body        : reqBody.comment
+      };      
+      Comment.create(newComment, (err, newComment)=>{
+        if(err) return cb(err);
+        dbPerson.wComments.push(newComment._id);
+        dbUser.wCommments.push(newComment._id);
+
+        dbPerson.save((err1, savedPerson)=> {
+          dbUser.save((err2, savedUser)=> {
+            err2 ? cb(err2) : cb(null, {savedPerson, savedPerson});
+          });
+        });
+      });
+    });
+  });
+};
 
 let Comment = mongoose.model('Comment', commentSchema);
 module.exports = Comment;
